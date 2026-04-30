@@ -192,9 +192,9 @@ export default function Contact() {
                     <button 
                       type="submit" 
                       disabled={status === 'submitting'}
-                      className="group relative w-full py-6 bg-[#c47801] text-white font-bold uppercase tracking-[0.2em] text-sm overflow-hidden rounded-xl transition-all hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:scale-100 shadow-2xl shadow-black/20"
+                      className="group relative w-full py-6 bg-[#0c468c] text-white font-bold uppercase tracking-[0.2em] text-sm overflow-hidden rounded-xl transition-all hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:scale-100 shadow-2xl shadow-black/20"
                     >
-                      <div className="absolute inset-0 bg-[#0c468c] translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-out" />
+                      <div className="absolute inset-0 bg-[#c47801] translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-out" />
                       <span className="relative z-10 flex items-center justify-center gap-3">
                         {status === 'submitting' ? (
                           <>
