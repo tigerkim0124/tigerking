@@ -1,0 +1,79 @@
+@font-face {
+  font-family: 'GmarketSans';
+  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansLight.woff') format('woff');
+  font-weight: 300;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'GmarketSans';
+  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff') format('woff');
+  font-weight: 500;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'GmarketSans';
+  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansBold.woff') format('woff');
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'NanumBarunGothic';
+  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_two@1.0/NanumBarunGothic.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'NanumBarunGothic';
+  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_two@1.0/NanumBarunGothicBold.woff') format('woff');
+  font-weight: 700;
+  font-style: normal;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap');
+@font-face {
+  font-family: 'Ethnocentric';
+  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2302@1.0/Ethnocentric.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "GmarketSans", ui-sans-serif, system-ui, sans-serif;
+  --font-barun: "NanumBarunGothic", sans-serif;
+  --font-display: "GmarketSans", sans-serif;
+  --font-ethno: "Ethnocentric", sans-serif;
+  --font-serif: "Nanum Myeongjo", serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+  
+  --color-brand: #0047AB; /* AIK Royal Blue */
+  --color-brand-light: #0066FF;
+  --color-accent: #11e8de;
+}
+
+@layer base {
+  body {
+    @apply bg-white text-black antialiased selection:bg-brand selection:text-white font-medium tracking-[-0.03em];
+  }
+}
+
+.glass {
+  @apply backdrop-blur-md bg-white/40 border border-black/5;
+}
+
+.text-gradient {
+  @apply bg-clip-text text-transparent bg-gradient-to-r from-black via-black to-brand;
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.no-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
