@@ -54,8 +54,6 @@ export default function Contact() {
             </h2>
             
             <div className="-mt-2">
-              <p className="inline-block px-4 py-1.5 text-[1rem] font-display font-bold tracking-[-0.03em] bg-[#0c468c] text-white rounded-lg shadow-xl mb-6">문의</p>
-              
               <div className="space-y-4">
                 <div className="flex items-center gap-4 text-[#0c468c]">
                   <div className="w-10 h-10 rounded-full bg-[#0c468c]/10 flex items-center justify-center shrink-0">
