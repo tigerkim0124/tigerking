@@ -2,11 +2,11 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 
 const BACKGROUND_IMAGES = [
-  "https://lh3.googleusercontent.com/d/1SrN0delqq88m2P0ZtIS7Ous7glsRLrSF",
   "https://lh3.googleusercontent.com/d/119fww8ag6yp2gXTmzANOm12fba3M0_fp",
+  "https://lh3.googleusercontent.com/d/1SrN0delqq88m2P0ZtIS7Ous7glsRLrSF",
+  "https://lh3.googleusercontent.com/d/1EnoWjJUX3GpeIMJT5vWrtEGMcvB3r-yl",
   "https://lh3.googleusercontent.com/d/11lRZDrqVddFc5x9TnO_qp3WzGFt2VC8A",
-  "https://lh3.googleusercontent.com/d/1OZOp4rXdAuxwF0HV8QDfveRK_KhytvaO",
-  "https://lh3.googleusercontent.com/d/1EnoWjJUX3GpeIMJT5vWrtEGMcvB3r-yl"
+  "https://lh3.googleusercontent.com/d/1OZOp4rXdAuxwF0HV8QDfveRK_KhytvaO"
 ];
 
 export default function Hero() {
@@ -15,7 +15,7 @@ export default function Hero() {
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % BACKGROUND_IMAGES.length);
-    }, 5400); // Slower interval for transition
+    }, 5400); // Interval between changes
     return () => clearInterval(timer);
   }, []);
 
@@ -23,20 +23,22 @@ export default function Hero() {
     <section className="relative h-screen w-full overflow-hidden flex items-center justify-center bg-white isolate">
       {/* Background Elements - Absolute lowest layer */}
       <div className="absolute inset-0 -z-10 bg-white">
-        {/* User Requested Hero Background Images with Smooth Dissolve Transition */}
+        {/* User Requested Hero Background Images with Smooth Dissolve & Movement Transition */}
         <div className="absolute inset-0 overflow-hidden">
           <AnimatePresence initial={false}>
             <motion.div 
               key={currentIndex}
-              initial={{ opacity: 0 }}
+              initial={{ opacity: 0, scale: 1.1 }}
               animate={{ 
                 opacity: (BACKGROUND_IMAGES[currentIndex] === "https://lh3.googleusercontent.com/d/11lRZDrqVddFc5x9TnO_qp3WzGFt2VC8A" || 
                          BACKGROUND_IMAGES[currentIndex] === "https://lh3.googleusercontent.com/d/1OZOp4rXdAuxwF0HV8QDfveRK_KhytvaO") 
-                         ? 0.22 : 0.20 
+                         ? 0.22 : 0.20,
+                scale: 1.0
               }}
-              exit={{ opacity: 0 }}
+              exit={{ opacity: 0, scale: 1.05 }}
               transition={{ 
-                opacity: { duration: 3, ease: "easeInOut" }
+                opacity: { duration: 1.8, ease: "easeInOut" },
+                scale: { duration: 6, ease: "linear" }
               }}
               className="absolute inset-0 bg-cover bg-center bg-no-repeat"
               style={{ backgroundImage: `url("${BACKGROUND_IMAGES[currentIndex]}")` }}
@@ -174,7 +176,7 @@ export default function Hero() {
           className="flex flex-col items-center text-center"
         >
           <h1 className="font-display font-bold leading-[0.9] tracking-[-0.05em] text-black mb-48 flex flex-col items-center">
-            <span className="text-[0.85rem] md:text-[1.06rem] lg:text-[1.27rem] mb-4 text-black/85 font-display font-bold tracking-[-0.05em] [word-spacing:-0.15em]">
+            <span className="text-[0.85rem] md:text-[1.06rem] lg:text-[1.27rem] mb-4 text-black/85 font-display font-bold tracking-[-0.05em] [word-spacing:-0.15em] translate-y-[5px]">
               AI + KOREA + CONTENTS
             </span>
             <span className="text-[2.48rem] md:text-[3.73rem] lg:text-[7.04rem] font-black tracking-[-0.07em] leading-none">
