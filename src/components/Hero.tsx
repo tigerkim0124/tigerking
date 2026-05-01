@@ -1,15 +1,48 @@
-import { motion } from 'motion/react';
+import { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
+
+const BACKGROUND_IMAGES = [
+  "https://lh3.googleusercontent.com/d/1SrN0delqq88m2P0ZtIS7Ous7glsRLrSF",
+  "https://lh3.googleusercontent.com/d/119fww8ag6yp2gXTmzANOm12fba3M0_fp",
+  "https://lh3.googleusercontent.com/d/11lRZDrqVddFc5x9TnO_qp3WzGFt2VC8A",
+  "https://lh3.googleusercontent.com/d/1OZOp4rXdAuxwF0HV8QDfveRK_KhytvaO",
+  "https://lh3.googleusercontent.com/d/1EnoWjJUX3GpeIMJT5vWrtEGMcvB3r-yl"
+];
 
 export default function Hero() {
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % BACKGROUND_IMAGES.length);
+    }, 6000); // Slower interval for transition
+    return () => clearInterval(timer);
+  }, []);
+
   return (
     <section className="relative h-screen w-full overflow-hidden flex items-center justify-center bg-white isolate">
       {/* Background Elements - Absolute lowest layer */}
       <div className="absolute inset-0 -z-10 bg-white">
-        {/* User Requested Hero Background Image */}
-        <div 
-          className="absolute inset-0 opacity-15 bg-cover bg-center bg-no-repeat"
-          style={{ backgroundImage: 'url("https://lh3.googleusercontent.com/d/1SrN0delqq88m2P0ZtIS7Ous7glsRLrSF")' }}
-        />
+        {/* User Requested Hero Background Images with Smooth Dissolve Transition */}
+        <div className="absolute inset-0 overflow-hidden">
+          <AnimatePresence initial={false}>
+            <motion.div 
+              key={currentIndex}
+              initial={{ opacity: 0 }}
+              animate={{ 
+                opacity: (BACKGROUND_IMAGES[currentIndex] === "https://lh3.googleusercontent.com/d/11lRZDrqVddFc5x9TnO_qp3WzGFt2VC8A" || 
+                         BACKGROUND_IMAGES[currentIndex] === "https://lh3.googleusercontent.com/d/1OZOp4rXdAuxwF0HV8QDfveRK_KhytvaO") 
+                         ? 0.22 : 0.20 
+              }}
+              exit={{ opacity: 0 }}
+              transition={{ 
+                opacity: { duration: 3, ease: "easeInOut" }
+              }}
+              className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+              style={{ backgroundImage: `url("${BACKGROUND_IMAGES[currentIndex]}")` }}
+            />
+          </AnimatePresence>
+        </div>
         {/* Technical Grid Strategy */}
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#00000003_1px,transparent_1px),linear-gradient(to_bottom,#00000003_1px,transparent_1px)] bg-[size:20px_20px]" />
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#00000008_1px,transparent_1px),linear-gradient(to_bottom,#00000008_1px,transparent_1px)] bg-[size:100px_100px]" />
@@ -140,7 +173,7 @@ export default function Hero() {
           transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
           className="flex flex-col items-center text-center"
         >
-          <h1 className="font-display font-bold leading-[0.9] tracking-[-0.05em] text-black mb-8 flex flex-col items-center">
+          <h1 className="font-display font-bold leading-[0.9] tracking-[-0.05em] text-black mb-48 flex flex-col items-center">
             <span className="text-[1.215rem] md:text-[1.51875rem] lg:text-[1.8225rem] mb-4 text-[#5e5e5e]/75 font-display font-bold tracking-[-0.015em] [word-spacing:-0.15em]">
               AI + KOREA + CONTENTS
             </span>
@@ -155,29 +188,10 @@ export default function Hero() {
             transition={{ delay: 0.5, duration: 0.8 }}
             className="max-w-3xl mx-auto text-[0.78rem] md:text-[0.88rem] lg:text-[1rem] text-black/80 font-display font-medium leading-relaxed tracking-normal"
           >
-            - <span className="font-bold text-[0.86rem] md:text-[0.97rem] lg:text-[1.1rem]">AI기술의 정점</span>에서 <span className="font-bold text-[0.86rem] md:text-[0.97rem] lg:text-[1.1rem]">따뜻한 사람의 감성</span>을 더합니다 -<br className="hidden md:block" />
+            - <span className="font-bold text-[0.86rem] md:text-[0.97rem] lg:text-[1.1rem]">AI기술의 정점</span>에서 <span className="font-bold text-[0.86rem] md:text-[0.97rem] lg:text-[1.1rem]">따뜻한 사람의 감성</span>을 더합니다 -<br />
             - <span className="font-bold text-[0.9rem] md:text-[1.02rem] lg:text-[1.15rem] text-black">따뜻한 디지털 영상 경험</span>을 설계합니다 -
           </motion.p>
           
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1, duration: 0.8 }}
-            className="pt-14 flex flex-col sm:flex-row items-center justify-center gap-6 pointer-events-auto"
-          >
-            <a 
-              href="#portfolio"
-              className="w-full sm:w-auto px-12 py-5 bg-white text-black font-bold uppercase tracking-widest transition-all rounded-full border-3 border-white hover:bg-[#0c468c] hover:text-white shadow-xl shadow-black/5"
-            >
-              포트폴리오 보기
-            </a>
-            <a 
-              href="#contact"
-              className="w-full sm:w-auto px-12 py-5 bg-white text-black font-bold uppercase tracking-widest transition-all rounded-full border-3 border-white hover:bg-[#cb7004] hover:text-white shadow-xl shadow-black/5"
-            >
-              제작 문의하기
-            </a>
-          </motion.div>
         </motion.div>
       </div>
 

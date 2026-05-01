@@ -34,10 +34,14 @@ export default function Contact() {
 
   return (
     <section id="contact" className="py-12 bg-white relative overflow-hidden isolate">
-      {/* Background Image with 15% opacity and horizontal flip */}
+      {/* Background Image with gradient opacity (10% left to 30% right) and horizontal flip */}
       <div 
-        className="absolute inset-0 -z-10 opacity-[0.15] bg-cover bg-center bg-no-repeat -scale-x-100"
-        style={{ backgroundImage: 'url("https://lh3.googleusercontent.com/d/1OZOp4rXdAuxwF0HV8QDfveRK_KhytvaO")' }}
+        className="absolute inset-0 -z-10 bg-cover bg-center bg-no-repeat -scale-x-100"
+        style={{ 
+          backgroundImage: 'url("https://lh3.googleusercontent.com/d/1MnzdxM7hhwqmIF9wAaQPJYwr7aVqnZD4")',
+          maskImage: 'linear-gradient(to right, rgba(0,0,0,0.1), rgba(0,0,0,0.3))',
+          WebkitMaskImage: 'linear-gradient(to right, rgba(0,0,0,0.1), rgba(0,0,0,0.3))'
+        }}
       />
       
       <div className="max-w-7xl mx-auto px-6 relative z-10">
@@ -55,15 +59,15 @@ export default function Contact() {
             
             <div className="-mt-2">
               <div className="space-y-4">
-                <div className="flex items-center gap-4 text-[#0c468c]">
-                  <div className="w-10 h-10 rounded-full bg-[#0c468c]/10 flex items-center justify-center shrink-0">
-                    <Mail size={20} />
+                <div className="flex items-center gap-4 text-brand">
+                  <div className="w-10 h-10 rounded-full bg-brand/10 flex items-center justify-center shrink-0">
+                    <Mail size={20} className="text-brand" />
                   </div>
                   <span className="text-[1.375rem] font-display font-bold tracking-tight">aik@aikcontents.kr</span>
                 </div>
-                <div className="flex items-center gap-4 text-[#0c468c]">
-                  <div className="w-10 h-10 rounded-full bg-[#0c468c]/10 flex items-center justify-center shrink-0">
-                    <Phone size={20} />
+                <div className="flex items-center gap-4 text-brand">
+                  <div className="w-10 h-10 rounded-full bg-brand/10 flex items-center justify-center shrink-0">
+                    <Phone size={20} className="text-brand" />
                   </div>
                   <span className="text-[1.375rem] font-display font-bold tracking-tight">070-8098-1896</span>
                 </div>
@@ -75,7 +79,7 @@ export default function Contact() {
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="backdrop-blur-xl bg-white/60 p-10 md:p-14 rounded-2xl border border-black/5 shadow-[0_32px_64px_-16px_rgba(0,0,0,0.1)] min-h-[500px] flex flex-col justify-center relative overflow-hidden"
+            className="bg-white p-10 md:p-14 rounded-2xl border border-black/5 shadow-[0_32px_64px_-16px_rgba(0,0,0,0.1)] min-h-[500px] flex flex-col justify-center relative overflow-hidden"
           >
             {/* Decorative background element for the form */}
             <div className="absolute top-0 right-0 w-32 h-32 bg-brand/5 blur-3xl -z-10 rounded-full translate-x-1/2 -translate-y-1/2" />
