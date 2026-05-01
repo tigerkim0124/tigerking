@@ -1,13 +1,10 @@
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
-import { Play, X } from 'lucide-react';
+import { motion } from 'motion/react';
 
 const projects = [
   {
     title: "DSEC Brand Film",
     client: "DSEC - Agency : 아트판타지아",
     category: "글로벌 프로젝트",
-    thumbnail: "https://images.unsplash.com/photo-1619767886558-efdc259cde1a?q=80&w=2000&auto=format&fit=crop",
     videoUrl: "https://www.youtube.com/embed/XLDSiqB6uvk",
     highlight: "글로벌 프로젝트 규모의 연출 및 실행"
   },
@@ -15,7 +12,6 @@ const projects = [
     title: "홍수예경보시스템(AI 홍보영상)",
     client: "한국농어촌공사 - Agency : 위디비",
     category: "정부/공공기관",
-    thumbnail: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2000&auto=format&fit=crop",
     videoUrl: "https://www.youtube.com/embed/7Sh6bBAApLY",
     highlight: "공공 섹터의 신뢰도를 높이는 AI 연출"
   },
@@ -23,7 +19,6 @@ const projects = [
     title: "사이버위협 능동대응 시스템(AI 영화)",
     client: "방위사업청 / 한국전자통신연구원 - Agency : 이글루코퍼레이션",
     category: "AI 시네마 광고",
-    thumbnail: "https://images.unsplash.com/photo-1579913741615-326996111b28?q=80&w=2000&auto=format&fit=crop",
     videoUrl: "https://www.youtube.com/embed/WtGx3bUFXSA",
     highlight: "국방 분야에 특화된 시네마적 감성"
   },
@@ -31,7 +26,6 @@ const projects = [
     title: "2025 대한민국 예산안(AI 활용)",
     client: "재정경제부 - Agency : 프레인글로벌",
     category: "비주얼 프로모",
-    thumbnail: "https://images.unsplash.com/photo-1513467535987-fd81bc7d62f8?q=80&w=2000&auto=format&fit=crop",
     videoUrl: "https://www.youtube.com/embed/ooBS3NxGE1Y",
     highlight: "강렬한 브랜드 임팩트 선사"
   },
@@ -39,7 +33,6 @@ const projects = [
     title: "USG공유대학2.0(AI 홍보영상)",
     client: "경상국립대학교 RISE사업단 - Agency : 아트판타지아",
     category: "산업 기술 홍보",
-    thumbnail: "https://images.unsplash.com/photo-1565514020179-026b92b84bb6?q=80&w=2000&auto=format&fit=crop",
     videoUrl: "https://www.youtube.com/embed/oB2vHRMtV-w",
     highlight: "첨단 물류 시스템의 시각화"
   },
@@ -47,7 +40,6 @@ const projects = [
     title: "배달쑤맨(AI 활용)",
     client: "대구광역시 - Agency : 인성데이타",
     category: "브랜드 필름",
-    thumbnail: "https://images.unsplash.com/photo-1558389186-438424b00a32?q=80&w=2000&auto=format&fit=crop",
     videoUrl: "https://www.youtube.com/embed/jrrlHPVjhws",
     highlight: "지속 가능한 미래 에너지 가치 전달"
   },
@@ -55,7 +47,6 @@ const projects = [
     title: "현대자동차 메타플랜트 아메리카(HMGMA)",
     client: "현대자동차 - Agency : 아트판타지아",
     category: "정부 프로젝트",
-    thumbnail: "https://images.unsplash.com/photo-1449824913935-59a10b8d2000?q=80&w=2000&auto=format&fit=crop",
     videoUrl: "https://www.youtube.com/embed/8mZYPmPVXTM",
     highlight: "미래 도시의 청사진을 그리는 시각화"
   },
@@ -63,7 +54,6 @@ const projects = [
     title: "어떤 선택을 하시겠습니까?",
     client: "사행산업통합감독위원회 - Agency : 팟빵",
     category: "브랜드 홍보",
-    thumbnail: "https://images.unsplash.com/photo-1593941707882-a5bba14938c7?q=80&w=2000&auto=format&fit=crop",
     videoUrl: "https://www.youtube.com/embed/uSoU1KIodMI",
     highlight: "글로벌 시장의 혁신을 알리는 고감도 영상"
   }
@@ -74,7 +64,6 @@ const aiProducts = [
     title: "AI애니메이션 광고",
     client: "AI상품예시",
     category: "AI 영상 상품",
-    thumbnail: "https://images.unsplash.com/photo-1536240478700-b869070f9279?q=80&w=2000&auto=format&fit=crop",
     videoUrl: "https://www.youtube.com/embed/XFYng730qO0",
     highlight: "최신 AI 기술이 집약된 시네마틱 연출"
   },
@@ -82,7 +71,6 @@ const aiProducts = [
     title: "AI브랜드 광고",
     client: "AI상품예시",
     category: "AI 영상 상품",
-    thumbnail: "https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?q=80&w=2000&auto=format&fit=crop",
     videoUrl: "https://www.youtube.com/embed/BmfxnWELGZ8",
     highlight: "자연스러운 AI 목소리와 결합된 정교한 인터뷰"
   },
@@ -90,7 +78,6 @@ const aiProducts = [
     title: "AI상품광고",
     client: "AI상품예시",
     category: "AI 영상 상품",
-    thumbnail: "https://images.unsplash.com/photo-1620336655174-32087532a392?q=80&w=2000&auto=format&fit=crop",
     videoUrl: "https://www.youtube.com/embed/B3oUmhq3JO0",
     highlight: "커머스에 특화된 고효율 AI 영상 제작"
   },
@@ -98,7 +85,6 @@ const aiProducts = [
     title: "AI소상공인 광고",
     client: "AI상품예시",
     category: "AI 영상 상품",
-    thumbnail: "https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=2000&auto=format&fit=crop",
     videoUrl: "https://www.youtube.com/embed/NwLAqC_fbuo",
     highlight: "바이럴에 최적화된 트렌디한 AI 영상"
   }
@@ -156,7 +142,7 @@ export default function Portfolio() {
         <div id="ai-products" className="mt-32 pt-20 border-t border-black/5">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-20 gap-8">
             <div>
-              <span className="font-sans font-medium text-brand text-sm uppercase tracking-[-0.02em] block mb-4">04 // AI Products</span>
+              <span className="font-sans font-medium text-brand text-sm uppercase tracking-[-0.02em] block mb-4">05 // AI Products</span>
               <h2 className="text-5xl md:text-6xl font-display font-bold tracking-[-0.05em] uppercase text-black">저가형 AI영상 예시</h2>
             </div>
             <p className="text-[#676868] max-w-md text-[14.84px] font-sans font-medium tracking-[-0.02em] leading-relaxed">

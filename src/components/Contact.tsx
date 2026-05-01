@@ -51,7 +51,7 @@ export default function Contact() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
           >
-            <span className="font-sans font-medium text-brand text-sm uppercase tracking-[-0.02em] block mb-4">04 // Contact</span>
+            <span className="font-sans font-medium text-brand text-sm uppercase tracking-[-0.02em] block mb-4">06 // Contact</span>
             <h2 className="text-5xl md:text-7xl font-display font-bold leading-none mb-8 text-black">
               LET'S CREATE <br />
               YOUR <span className="text-gradient">STORY</span>

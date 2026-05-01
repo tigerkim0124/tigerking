@@ -1,6 +1,5 @@
 import { motion } from 'motion/react';
 import { History, Cpu, Film } from 'lucide-react';
-import { useEffect, useRef } from 'react';
 
 const strengths = [
   {
