@@ -42,7 +42,7 @@ export default function Services() {
       <div className="max-w-7xl mx-auto px-6">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-20 gap-8">
           <div>
-            <span className="font-sans font-medium text-brand text-sm uppercase tracking-[-0.02em] block mb-4">02 // Services</span>
+            <span className="font-sans font-medium text-brand text-sm uppercase tracking-[-0.02em] block mb-4">01 // Services</span>
             <h2 className="text-5xl md:text-6xl font-display font-bold tracking-tighter uppercase text-black">주요 서비스</h2>
           </div>
           <p className="text-[#676868] max-w-md text-[14.84px] font-sans font-medium tracking-[-0.02em] leading-relaxed">

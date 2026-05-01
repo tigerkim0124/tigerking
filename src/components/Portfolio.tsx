@@ -111,7 +111,7 @@ export default function Portfolio() {
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-20 gap-8">
           <div>
             <span className="font-sans font-medium text-brand text-sm uppercase tracking-[-0.02em] block mb-4">03 // Track Record</span>
-            <h2 className="text-5xl md:text-6xl font-display font-bold tracking-[-0.05em] uppercase text-black">주요 프로젝트</h2>
+            <h2 className="text-5xl md:text-6xl font-display font-bold tracking-[-0.05em] uppercase text-black">포트폴리오</h2>
           </div>
           <p className="text-[#676868] max-w-md text-[14.84px] font-sans font-medium tracking-[-0.02em] leading-relaxed">
             AIK 콘텐츠는 글로벌 프로젝트, 정부기관, 대기업 및 <br />

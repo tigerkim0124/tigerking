@@ -25,8 +25,8 @@ export default function Header() {
         
         <nav className="hidden md:flex items-center gap-10">
           {[
-            { label: '회사소개', id: 'about' },
             { label: '서비스', id: 'services' },
+            { label: '회사소개', id: 'about' },
             { label: '포트폴리오', id: 'portfolio' },
             { label: '저가형 AI영상 예시', id: 'ai-products' }
           ].map((item) => (

@@ -15,7 +15,7 @@ export default function Hero() {
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % BACKGROUND_IMAGES.length);
-    }, 6000); // Slower interval for transition
+    }, 5400); // Slower interval for transition
     return () => clearInterval(timer);
   }, []);
 
@@ -174,23 +174,26 @@ export default function Hero() {
           className="flex flex-col items-center text-center"
         >
           <h1 className="font-display font-bold leading-[0.9] tracking-[-0.05em] text-black mb-48 flex flex-col items-center">
-            <span className="text-[1.215rem] md:text-[1.51875rem] lg:text-[1.8225rem] mb-4 text-[#5e5e5e]/75 font-display font-bold tracking-[-0.015em] [word-spacing:-0.15em]">
+            <span className="text-[0.85rem] md:text-[1.06rem] lg:text-[1.27rem] mb-4 text-black/85 font-display font-bold tracking-[-0.015em] [word-spacing:-0.15em]">
               AI + KOREA + CONTENTS
             </span>
-            <span className="text-[2.76rem] md:text-[4.14rem] lg:text-[7.82rem] font-black tracking-[-0.07em] leading-none">
+            <span className="text-[2.48rem] md:text-[3.73rem] lg:text-[7.04rem] font-black tracking-[-0.07em] leading-none">
               AIK <span className="text-brand">CONTENTS</span>
             </span>
           </h1>
           
-          <motion.p 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5, duration: 0.8 }}
-            className="max-w-3xl mx-auto text-[0.78rem] md:text-[0.88rem] lg:text-[1rem] text-black/80 font-display font-medium leading-relaxed tracking-normal"
-          >
-            - <span className="font-bold text-[0.86rem] md:text-[0.97rem] lg:text-[1.1rem]">AI기술의 정점</span>에서 <span className="font-bold text-[0.86rem] md:text-[0.97rem] lg:text-[1.1rem]">따뜻한 사람의 감성</span>을 더합니다 -<br />
-            - <span className="font-bold text-[0.9rem] md:text-[1.02rem] lg:text-[1.15rem] text-black">따뜻한 디지털 영상 경험</span>을 설계합니다 -
-          </motion.p>
+          <div className="flex flex-col items-center mt-20">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5, duration: 0.8 }}
+              className="bg-brand/85 px-6 py-2.5 rounded-full shadow-lg backdrop-blur-sm"
+            >
+              <p className="text-[0.77rem] md:text-[0.86rem] lg:text-[0.94rem] text-white font-display font-medium tracking-normal">
+                - <span className="font-bold text-[0.83rem] md:text-[0.94rem] lg:text-[1.05rem] tracking-normal">AI기술</span>에 <span className="font-bold text-[0.83rem] md:text-[0.94rem] lg:text-[1.05rem] tracking-normal">따뜻한 사람의 감성</span>을 더합니다 -
+              </p>
+            </motion.div>
+          </div>
           
         </motion.div>
       </div>

@@ -30,7 +30,7 @@ export default function About() {
             whileInView={{ x: 0, opacity: 1 }}
             viewport={{ once: true }}
           >
-            <span className="font-sans font-medium text-brand text-sm uppercase tracking-[-0.02em] block mb-4">01 // Identity</span>
+            <span className="font-sans font-medium text-brand text-sm uppercase tracking-[-0.02em] block mb-4">02 // ABOUT</span>
             <h2 className="text-3xl md:text-5xl font-display font-bold leading-tight mb-8 tracking-[-0.05em] text-black">
               PROFESSIONALISM <br />
               <span className="opacity-20">MEETS</span> INNOVATION

@@ -38,8 +38,8 @@ export default function App() {
     <main className="relative selection:bg-brand selection:text-white">
       <Header />
       <Hero />
-      <About />
       <Services />
+      <About />
       <Portfolio />
       <Contact />
       <Footer />
