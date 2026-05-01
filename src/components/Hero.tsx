@@ -174,7 +174,7 @@ export default function Hero() {
           className="flex flex-col items-center text-center"
         >
           <h1 className="font-display font-bold leading-[0.9] tracking-[-0.05em] text-black mb-48 flex flex-col items-center">
-            <span className="text-[0.85rem] md:text-[1.06rem] lg:text-[1.27rem] mb-4 text-black/85 font-display font-bold tracking-[-0.015em] [word-spacing:-0.15em]">
+            <span className="text-[0.85rem] md:text-[1.06rem] lg:text-[1.27rem] mb-4 text-black/85 font-display font-bold tracking-[-0.05em] [word-spacing:-0.15em]">
               AI + KOREA + CONTENTS
             </span>
             <span className="text-[2.48rem] md:text-[3.73rem] lg:text-[7.04rem] font-black tracking-[-0.07em] leading-none">
@@ -187,10 +187,10 @@ export default function Hero() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5, duration: 0.8 }}
-              className="bg-brand/85 px-6 py-2.5 rounded-full shadow-lg backdrop-blur-sm"
+              className="bg-brand/85 px-2 py-[0.53rem] rounded-full shadow-lg backdrop-blur-sm"
             >
-              <p className="text-[0.77rem] md:text-[0.86rem] lg:text-[0.94rem] text-white font-display font-medium tracking-normal">
-                - <span className="font-bold text-[0.83rem] md:text-[0.94rem] lg:text-[1.05rem] tracking-normal">AI기술</span>에 <span className="font-bold text-[0.83rem] md:text-[0.94rem] lg:text-[1.05rem] tracking-normal">따뜻한 사람의 감성</span>을 더합니다 -
+              <p className="text-[0.79rem] md:text-[0.89rem] lg:text-[0.97rem] text-white font-display font-medium tracking-normal">
+                - <span className="font-bold text-[0.85rem] md:text-[0.97rem] lg:text-[1.08rem] tracking-normal">AI기술</span>에 <span className="font-bold text-[0.85rem] md:text-[0.97rem] lg:text-[1.08rem] tracking-normal">따뜻한 사람</span>의 <span className="font-bold text-[0.85rem] md:text-[0.97rem] lg:text-[1.08rem] tracking-normal">감성</span>을 더합니다 -
               </p>
             </motion.div>
           </div>
