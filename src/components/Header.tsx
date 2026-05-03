@@ -13,7 +13,7 @@ export default function Header() {
           <div className="w-[70px] h-[70px] flex items-center justify-center overflow-hidden rounded-sm">
             <img 
               src="https://lh3.googleusercontent.com/u/0/d/1cdXX4dH2mytWkM9pUae7ebviCLUfb5Ds" 
-              alt="AIK 콘텐츠 - AI 전문 영상 제작사 로고" 
+              alt="AIK CONTENTS Korea - AI 전문 영상 제작사 로고" 
               className="w-full h-full object-contain"
               referrerPolicy="no-referrer"
             />

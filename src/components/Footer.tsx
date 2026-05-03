@@ -12,14 +12,16 @@ export default function Footer() {
             <a href="https://aikcontents.kr/" className="hover:opacity-80 transition-opacity">
               <img 
                 src="https://lh3.googleusercontent.com/d/1jD8BUIBu-rhvg_kPqt7Id_wWPuKmjpda" 
-                alt="AIK Contents" 
+                alt="AIK CONTENTS" 
                 style={{ width: '90px' }}
                 className="object-contain"
                 referrerPolicy="no-referrer"
               />
             </a>
             <p className="text-black tracking-[-0.05em] max-w-lg">
-              <span className="text-[23.567px] font-bold">AIK 콘텐츠</span><span className="text-[17.419px] font-medium">에게 최고의 브랜드는 바로 여러분입니다.</span>
+              <span className="text-[17.419px] font-medium">
+                우리에게 최고의 브랜드는 바로 <span className="text-[19.16px] font-bold text-brand">여러분</span>입니다.
+              </span>
             </p>
           </div>
 
@@ -39,8 +41,8 @@ export default function Footer() {
 
         <div className="mt-12 pt-8 border-t border-black/5 flex flex-col md:flex-row justify-end items-center gap-6">
           
-          <p className="text-[15px] font-sans font-medium tracking-normal text-[#8b8c8e]">
-            © {currentYear} AIK 콘텐츠. All rights reserved.
+          <p className="text-[12.75px] font-sans font-medium tracking-normal text-[#8b8c8e]">
+            © {currentYear} AIK CONTENTS KOREA. All rights reserved.
           </p>
         </div>
       </div>
