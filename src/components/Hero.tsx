@@ -70,8 +70,8 @@ export default function Hero() {
       <div className="relative z-50 max-w-7xl mx-auto px-6">
         <div className="flex flex-col items-center text-center">
           <h1 className="font-display font-bold leading-[0.9] tracking-[-0.05em] text-black mb-48 flex flex-col items-center">
-            <span className="text-[0.85rem] md:text-[1.06rem] lg:text-[1.27rem] mb-4 text-black/85 font-display font-bold tracking-[-0.05em] [word-spacing:-0.15em] translate-y-[5px]">
-              AI + KOREA + CONTENTS
+            <span className="text-[0.85rem] md:text-[1.06rem] lg:text-[1.27rem] mb-4 text-black/60 font-display font-bold tracking-[-0.05em] [word-spacing:-0.15em] translate-y-[5px]">
+              AI + KOREA + VIDEO<span className="inline-block w-[0.26em]"></span>CONTENTS
             </span>
             <span className="text-[2.48rem] md:text-[3.73rem] lg:text-[7.04rem] font-black tracking-[-0.07em] leading-none">
               AIK <span className="text-brand">CONTENTS</span>
