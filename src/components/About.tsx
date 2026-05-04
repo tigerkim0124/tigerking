@@ -1,5 +1,5 @@
 import { motion } from 'motion/react';
-import { History, Cpu, Film } from 'lucide-react';
+import { History, Cpu, Film, FileDown } from 'lucide-react';
 
 const strengths = [
   {
@@ -40,6 +40,23 @@ export default function About() {
               <br /><br />
               <span className="text-[1.1rem] font-bold text-black">"세상이 변해도 영상과 이야기는 남습니다."</span>
             </p>
+
+            <motion.a
+              href="https://drive.google.com/file/d/1gaHH-IXFsqvp1j9vFyjXJ10fxJ0LJ1PR/view?usp=drive_link"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-3 mt-10 p-1 group no-underline"
+              whileHover={{ x: 5 }}
+              transition={{ type: "spring", stiffness: 400, damping: 10 }}
+            >
+              <div className="w-11 h-11 rounded-full bg-black/5 flex items-center justify-center text-black group-hover:bg-brand group-hover:text-white transition-all duration-300 border border-black/5">
+                <FileDown size={20} />
+              </div>
+              <div className="flex flex-col">
+                <span className="text-[0.75rem] font-sans font-bold text-black/40 uppercase tracking-wider leading-none mb-1">Company Profile</span>
+                <span className="text-[1rem] font-sans font-bold text-black group-hover:text-brand transition-colors duration-300 tracking-tighter">회사소개서 다운로드</span>
+              </div>
+            </motion.a>
           </motion.div>
 
           <div className="grid gap-12">
