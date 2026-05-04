@@ -11,6 +11,14 @@ const services = [
     isDark: true
   },
   {
+    icon: <Sparkles size={24} />,
+    title: "중소기업 & 소상공인을 위한 영상서비스",
+    content: "소상공인 및 중소기업을 위해 제작 장벽을 낮춘 초저가 AI 영상 제작 패키지를 제공합니다.",
+    tag: "SME 특별 플랜",
+    bgImage: "https://lh3.googleusercontent.com/u/0/d/1Pm77MYSd94kIy4210G1dXUYO1Fz5xtEJ",
+    isDark: true
+  },
+  {
     icon: <Edit3 size={24} />,
     title: "AI 비디오 에디팅",
     content: "기존 소스에 AI 효과, 음악, 목소리들을 접목하여 더욱 화려하고 감각적인 영상미를 구현합니다.",
@@ -24,14 +32,6 @@ const services = [
     content: "독자적인 시나리오와 AI 기술을 결합하여 시네마틱한 감성을 담은 오리지널 콘텐츠를 제작합니다.",
     tag: "오리지널",
     bgImage: "https://lh3.googleusercontent.com/u/0/d/1I9F-KD2X19ZGjnuJaPwbBJ8f2JsDVAK1",
-    isDark: true
-  },
-  {
-    icon: <Sparkles size={24} />,
-    title: "중소기업 & 소상공인을 위한 영상서비스",
-    content: "소상공인 및 중소기업을 위해 제작 장벽을 낮춘 초저가 AI 영상 제작 패키지를 제공합니다.",
-    tag: "SME 특별 플랜",
-    bgImage: "https://lh3.googleusercontent.com/u/0/d/1Pm77MYSd94kIy4210G1dXUYO1Fz5xtEJ",
     isDark: true
   }
 ];
