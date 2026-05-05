@@ -2,11 +2,10 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 
 const BACKGROUND_IMAGES = [
-  "https://lh3.googleusercontent.com/d/119fww8ag6yp2gXTmzANOm12fba3M0_fp",
-  "https://lh3.googleusercontent.com/d/1SrN0delqq88m2P0ZtIS7Ous7glsRLrSF",
-  "https://lh3.googleusercontent.com/d/1EnoWjJUX3GpeIMJT5vWrtEGMcvB3r-yl",
-  "https://lh3.googleusercontent.com/d/11lRZDrqVddFc5x9TnO_qp3WzGFt2VC8A",
-  "https://lh3.googleusercontent.com/d/1OZOp4rXdAuxwF0HV8QDfveRK_KhytvaO"
+  "https://lh3.googleusercontent.com/d/1bPjBeWYF1Qb8whDXnujNogHXIUe6iYam",
+  "https://lh3.googleusercontent.com/d/1aRnC9ZlRlFyG4ozjyPyRwevrTBU3bwkK",
+  "https://lh3.googleusercontent.com/d/1y9mgKGtGV3w70yGoEUKIURXQAR-OG1Og",
+  "https://lh3.googleusercontent.com/d/1eElCUgcSJWWuTRI5QSttTD6Hq0P63_HZ"
 ];
 
 export default function Hero() {
@@ -30,9 +29,7 @@ export default function Hero() {
               key={currentIndex}
               initial={{ opacity: 0, scale: 1.1 }}
               animate={{ 
-                opacity: (BACKGROUND_IMAGES[currentIndex] === "https://lh3.googleusercontent.com/d/11lRZDrqVddFc5x9TnO_qp3WzGFt2VC8A" || 
-                         BACKGROUND_IMAGES[currentIndex] === "https://lh3.googleusercontent.com/d/1OZOp4rXdAuxwF0HV8QDfveRK_KhytvaO") 
-                         ? 0.22 : 0.20,
+                opacity: 0.20,
                 scale: 1.0
               }}
               exit={{ opacity: 0, scale: 1.05 }}
