@@ -5,7 +5,8 @@ const BACKGROUND_IMAGES = [
   "https://lh3.googleusercontent.com/d/1bPjBeWYF1Qb8whDXnujNogHXIUe6iYam",
   "https://lh3.googleusercontent.com/d/1aRnC9ZlRlFyG4ozjyPyRwevrTBU3bwkK",
   "https://lh3.googleusercontent.com/d/1y9mgKGtGV3w70yGoEUKIURXQAR-OG1Og",
-  "https://lh3.googleusercontent.com/d/1eElCUgcSJWWuTRI5QSttTD6Hq0P63_HZ"
+  "https://lh3.googleusercontent.com/d/1eElCUgcSJWWuTRI5QSttTD6Hq0P63_HZ",
+  "https://lh3.googleusercontent.com/d/1BuMMcCKZ9SKeNWvSYHSHn3ArlFEytGtF"
 ];
 
 export default function Hero() {
