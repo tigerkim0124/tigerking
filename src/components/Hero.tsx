@@ -76,13 +76,6 @@ export default function Hero() {
             </span>
           </h1>
           
-          <div className="flex flex-col items-center mt-20">
-            <div className="bg-brand/85 px-2 py-[0.53rem] rounded-full shadow-lg backdrop-blur-sm">
-              <p className="text-[0.79rem] md:text-[0.89rem] lg:text-[0.97rem] text-white font-display font-medium tracking-normal">
-                - <span className="font-bold text-[0.85rem] md:text-[0.97rem] lg:text-[1.08rem] tracking-normal">AI기술</span>에 <span className="font-bold text-[0.85rem] md:text-[0.97rem] lg:text-[1.08rem] tracking-normal">따뜻한 사람</span>의 <span className="font-bold text-[0.85rem] md:text-[0.97rem] lg:text-[1.08rem] tracking-normal">감성</span>을 더합니다 -
-              </p>
-            </div>
-          </div>
         </div>
       </div>
 

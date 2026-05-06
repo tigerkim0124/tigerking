@@ -71,14 +71,14 @@ const aiProducts = [
     title: "AI브랜드 광고",
     client: "AI상품예시",
     category: "AI 영상 상품",
-    videoUrl: "https://www.youtube.com/embed/BmfxnWELGZ8",
+    videoUrl: "https://www.youtube.com/embed/_Jij1rtMpxg",
     highlight: "자연스러운 AI 목소리와 결합된 정교한 인터뷰"
   },
   {
     title: "AI상품광고",
     client: "AI상품예시",
     category: "AI 영상 상품",
-    videoUrl: "https://www.youtube.com/embed/B3oUmhq3JO0",
+    videoUrl: "https://www.youtube.com/embed/BmfxnWELGZ8",
     highlight: "커머스에 특화된 고효율 AI 영상 제작"
   },
   {
