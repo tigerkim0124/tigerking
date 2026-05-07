@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { X } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { collection, query, orderBy, onSnapshot } from 'firebase/firestore';
@@ -24,6 +25,11 @@ enum OperationType {
 export function NoticeModal({ isOpen, onClose }: NoticeModalProps) {
   const [notices, setNotices] = useState<Notice[]>([]);
   const [loading, setLoading] = useState(true);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -50,17 +56,19 @@ export function NoticeModal({ isOpen, onClose }: NoticeModalProps) {
     return () => unsubscribe();
   }, [isOpen]);
 
-  return (
+  if (!mounted) return null;
+
+  return createPortal(
     <AnimatePresence>
       {isOpen && (
-        <>
+        <div className="fixed inset-0 z-[10000] flex items-center justify-center p-4">
           {/* Backdrop */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="fixed inset-0 bg-black/40 backdrop-blur-sm z-[10000]"
+            className="absolute inset-0 bg-black/40 backdrop-blur-sm"
           />
           
           {/* Modal Content */}
@@ -68,7 +76,7 @@ export function NoticeModal({ isOpen, onClose }: NoticeModalProps) {
             initial={{ opacity: 0, scale: 0.95, y: 30 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 30 }}
-            className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-2xl bg-white rounded-2xl shadow-2xl z-[10001] overflow-hidden"
+            className="relative w-full max-w-2xl bg-white rounded-2xl shadow-2xl z-[10001] overflow-hidden"
           >
             {/* Header */}
             <div className="bg-[#0c468c] px-6 py-4 flex items-center justify-between">
@@ -119,8 +127,9 @@ export function NoticeModal({ isOpen, onClose }: NoticeModalProps) {
               </button>
             </div>
           </motion.div>
-        </>
+        </div>
       )}
-    </AnimatePresence>
+    </AnimatePresence>,
+    document.body
   );
 }

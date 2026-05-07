@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { 
   collection, 
   query, 
@@ -32,8 +33,10 @@ export function AdminDashboard({ onClose }: { onClose: () => void }) {
   const [notices, setNotices] = useState<Notice[]>([]);
   const [isEditing, setIsEditing] = useState(false);
   const [currentNotice, setCurrentNotice] = useState<Partial<Notice>>({});
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
     const unsubscribeAuth = onAuthStateChanged(auth, async (user) => {
       setUser(user);
       if (user) {
@@ -106,33 +109,14 @@ export function AdminDashboard({ onClose }: { onClose: () => void }) {
     }
   };
 
-  if (loading) return <div className="fixed inset-0 bg-white flex items-center justify-center z-[20000]">Loading...</div>;
+  if (!mounted) return null;
 
-  if (!user || !isAdmin) {
-    return (
-      <div className="fixed inset-0 bg-white z-[20000] flex flex-col items-center justify-center p-6">
-        <h1 className="text-2xl font-bold mb-6">관리자 로그인</h1>
-        {!user ? (
-          <button 
-            onClick={signInWithGoogle}
-            className="flex items-center gap-3 px-6 py-3 bg-black text-white rounded-lg font-bold hover:bg-black/80 transition-all cursor-pointer"
-          >
-            Google 계정으로 로그인
-          </button>
-        ) : (
-          <div className="text-center">
-            <p className="text-red-500 mb-4">관리자 권한이 없습니다. ({user.email})</p>
-            <button onClick={logout} className="text-sm underline cursor-pointer">로그아웃</button>
-          </div>
-        )}
-        <button onClick={onClose} className="mt-8 text-black/40 hover:text-black flex items-center gap-1 cursor-pointer">
-          <ChevronLeft className="w-4 h-4" /> 메인으로 돌아가기
-        </button>
-      </div>
-    );
-  }
+  if (loading) return createPortal(
+    <div className="fixed inset-0 bg-white flex items-center justify-center z-[20000]">불러오는 중...</div>,
+    document.body
+  );
 
-  return (
+  return createPortal(
     <div className="fixed inset-0 bg-gray-50 z-[20000] overflow-y-auto">
       <header className="bg-white border-b border-gray-200 sticky top-0 z-10 px-6 py-4 flex items-center justify-between">
         <div className="flex items-center gap-4">
@@ -140,7 +124,7 @@ export function AdminDashboard({ onClose }: { onClose: () => void }) {
           <h1 className="text-xl font-bold">AIK 공지사항 관리</h1>
         </div>
         <div className="flex items-center gap-4">
-          <span className="text-sm text-gray-500 hidden sm:inline">{user.email}</span>
+          <span className="text-sm text-gray-500 hidden sm:inline">{user?.email}</span>
           <button onClick={logout} className="p-2 hover:bg-gray-100 rounded-full transition-colors cursor-pointer">
             <LogOut className="w-5 h-5 text-gray-500" />
           </button>
@@ -150,63 +134,85 @@ export function AdminDashboard({ onClose }: { onClose: () => void }) {
         </div>
       </header>
 
-      <main className="max-w-5xl mx-auto p-6">
-        <div className="flex justify-between items-center mb-8">
-          <h2 className="text-2xl font-bold">공지사항 목록</h2>
-          <button 
-            onClick={() => {
-              setIsEditing(true);
-              setCurrentNotice({ date: new Date().toISOString().split('T')[0] });
-            }}
-            className="flex items-center gap-2 px-4 py-2 bg-[#0c468c] text-white rounded-lg font-bold hover:bg-[#0c468c]/90 transition-all cursor-pointer"
-          >
-            <Plus className="w-4 h-4" /> 신규 등록
-          </button>
-        </div>
-
-        <div className="grid gap-4">
-          {notices.map((notice) => (
-            <div key={notice.id} className="bg-white p-5 rounded-xl border border-gray-200 shadow-sm flex items-start justify-between">
-              <div>
-                <div className="flex items-center gap-3 mb-2">
-                  <span className="text-xs font-mono text-[#0c468c] bg-[#0c468c]/5 px-2 py-0.5 rounded">
-                    {notice.date}
-                  </span>
-                  {notice.isNew && (
-                    <span className="text-[10px] font-bold text-white bg-red-500 px-1.5 py-0.5 rounded-sm">
-                      NEW
-                    </span>
-                  )}
-                </div>
-                <h3 className="font-bold text-lg mb-1">{notice.title}</h3>
-                <p className="text-sm text-gray-500 line-clamp-2">{notice.content}</p>
-              </div>
-              <div className="flex items-center gap-2 ml-4">
-                <button 
-                  onClick={() => {
-                    setIsEditing(true);
-                    setCurrentNotice(notice);
-                  }}
-                  className="p-2 hover:bg-blue-50 text-blue-600 rounded-lg transition-colors cursor-pointer"
-                >
-                  <Edit2 className="w-4 h-4" />
-                </button>
-                <button 
-                  onClick={() => handleDelete(notice.id)}
-                  className="p-2 hover:bg-red-50 text-red-600 rounded-lg transition-colors cursor-pointer"
-                >
-                  <Trash2 className="w-4 h-4" />
-                </button>
-              </div>
-            </div>
-          ))}
-          {notices.length === 0 && (
-            <div className="text-center py-20 text-gray-400">
-              등록된 공지사항이 없습니다.
+      {!user || !isAdmin ? (
+        <div className="flex flex-col items-center justify-center min-h-[calc(100vh-80px)] p-6">
+          <h1 className="text-2xl font-bold mb-6">관리자 로그인</h1>
+          {!user ? (
+            <button 
+              onClick={signInWithGoogle}
+              className="flex items-center gap-3 px-6 py-3 bg-black text-white rounded-lg font-bold hover:bg-black/80 transition-all cursor-pointer"
+            >
+              Google 계정으로 로그인
+            </button>
+          ) : (
+            <div className="text-center">
+              <p className="text-red-500 mb-4">관리자 권한이 없습니다. ({user.email})</p>
+              <button onClick={logout} className="text-sm underline cursor-pointer">로그아웃</button>
             </div>
           )}
+          <button onClick={onClose} className="mt-8 text-black/40 hover:text-black flex items-center gap-1 cursor-pointer">
+            <ChevronLeft className="w-4 h-4" /> 메인으로 돌아가기
+          </button>
         </div>
-      </main>
+      ) : (
+        <main className="max-w-5xl mx-auto p-6">
+          <div className="flex justify-between items-center mb-8">
+            <h2 className="text-2xl font-bold">공지사항 목록</h2>
+            <button 
+              onClick={() => {
+                setIsEditing(true);
+                setCurrentNotice({ date: new Date().toISOString().split('T')[0] });
+              }}
+              className="flex items-center gap-2 px-4 py-2 bg-[#0c468c] text-white rounded-lg font-bold hover:bg-[#0c468c]/90 transition-all cursor-pointer"
+            >
+              <Plus className="w-4 h-4" /> 신규 등록
+            </button>
+          </div>
+
+          <div className="grid gap-4">
+            {notices.map((notice) => (
+              <div key={notice.id} className="bg-white p-5 rounded-xl border border-gray-200 shadow-sm flex items-start justify-between">
+                <div>
+                  <div className="flex items-center gap-3 mb-2">
+                    <span className="text-xs font-mono text-[#0c468c] bg-[#0c468c]/5 px-2 py-0.5 rounded">
+                      {notice.date}
+                    </span>
+                    {notice.isNew && (
+                      <span className="text-[10px] font-bold text-white bg-red-500 px-1.5 py-0.5 rounded-sm">
+                        NEW
+                      </span>
+                    )}
+                  </div>
+                  <h3 className="font-bold text-lg mb-1">{notice.title}</h3>
+                  <p className="text-sm text-gray-500 line-clamp-2">{notice.content}</p>
+                </div>
+                <div className="flex items-center gap-2 ml-4">
+                  <button 
+                    onClick={() => {
+                      setIsEditing(true);
+                      setCurrentNotice(notice);
+                    }}
+                    className="p-2 hover:bg-blue-50 text-blue-600 rounded-lg transition-colors cursor-pointer"
+                  >
+                    <Edit2 className="w-4 h-4" />
+                  </button>
+                  <button 
+                    onClick={() => handleDelete(notice.id)}
+                    className="p-2 hover:bg-red-50 text-red-600 rounded-lg transition-colors cursor-pointer"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </button>
+                </div>
+              </div>
+            ))}
+            {notices.length === 0 && (
+              <div className="text-center py-20 text-gray-400">
+                등록된 공지사항이 없습니다.
+              </div>
+            )}
+          </div>
+        </main>
+      )}
 
       {/* Edit/Create Modal */}
       <AnimatePresence>
@@ -295,6 +301,7 @@ export function AdminDashboard({ onClose }: { onClose: () => void }) {
           </div>
         )}
       </AnimatePresence>
-    </div>
+    </div>,
+    document.body
   );
 }

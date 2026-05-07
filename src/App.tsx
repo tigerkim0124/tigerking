@@ -41,14 +41,18 @@ export default function App() {
   }, []);
 
   return (
-    <main className="relative selection:bg-brand selection:text-white">
-      <Header onOpenNotice={() => setIsNoticeOpen(true)} />
-      <Hero />
-      <Services />
-      <About />
-      <Portfolio />
-      <Contact />
-      <Footer onAdminTrigger={() => setIsAdminOpen(true)} />
+    <div className="relative min-h-screen">
+      <main className="selection:bg-brand selection:text-white">
+        <Header onOpenNotice={() => setIsNoticeOpen(true)} />
+        <Hero />
+        <Services />
+        <About />
+        <Portfolio />
+        <Contact />
+        <Footer onAdminTrigger={() => setIsAdminOpen(true)} />
+      </main>
+
+      {/* Fixed UI Elements */}
       <ScrollToTop />
       <NoticeModal isOpen={isNoticeOpen} onClose={() => setIsNoticeOpen(false)} />
       {isAdminOpen && <AdminDashboard onClose={() => setIsAdminOpen(false)} />}
@@ -58,6 +62,6 @@ export default function App() {
         <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-brand/10 blur-[120px] rounded-full" />
         <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-brand/5 blur-[120px] rounded-full" />
       </div>
-    </main>
+    </div>
   );
 }
