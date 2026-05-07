@@ -9,7 +9,7 @@ const firebaseConfig = {
   storageBucket: import.meta.env.gen-lang-client-0857775553.firebasestorage.app,
   messagingSenderId: import.meta.env.265345450031,
   appId: import.meta.env.1:265345450031:web:c0021dca323ea90912c6da,
-  firestoreDatabaseId: import.meta.env.VITE_FIREBASE_DATABASE_ID || '(default)'
+  firestoreDatabaseId: import.meta.env.default
 };
 
 // Global flags and instances
