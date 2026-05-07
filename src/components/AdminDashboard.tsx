@@ -30,8 +30,8 @@ import {
   AlertCircle
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
+import ReactQuill from 'react-quill-new';
+import 'react-quill-new/dist/quill.snow.css';
 
 // Admin dashboard should be a stable, high-performance workspace.
 // This version uses a full-screen layout with a document-centric editor.
