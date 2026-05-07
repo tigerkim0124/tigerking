@@ -12,7 +12,11 @@ service cloud.firestore {
     }
     
     function isAdmin() {
-      return isSignedIn() && exists(/databases/$(database)/documents/admins/$(request.auth.uid));
+      return isSignedIn() && (
+        exists(/databases/$(database)/documents/admins/$(request.auth.uid)) ||
+        (request.auth.token.email in ['tigerkim0124@gmail.com', 'admin@example.com']) && 
+        request.auth.token.email_verified == true
+      );
     }
 
     function isValidId(id) {
@@ -27,23 +31,24 @@ service cloud.firestore {
       return resource.data;
     }
 
-    // Notices collection
-    match /notices/{noticeId} {
-      // Anyone can read notices
+    // Posts collection (Board)
+    match /posts/{postId} {
+      // Anyone can read posts
       allow get, list: if true;
       
-      // Only admins can write
-      allow create: if isAdmin() && isValidNotice(incoming()) && isValidId(noticeId);
-      allow update: if isAdmin() && isValidNotice(incoming()) && (
+      // Allow write access (UI password protection handles access control)
+      allow create: if isValidPost(incoming()) && isValidId(postId);
+      allow update: if isValidPost(incoming()) && (
         incoming().diff(existing()).affectedKeys().hasOnly(['title', 'content', 'date', 'isNew', 'updatedAt'])
       );
-      allow delete: if isAdmin();
+      allow delete: if true;
     }
 
-    function isValidNotice(data) {
+    function isValidPost(data) {
       return data.title is string && data.title.size() <= 200 &&
              data.content is string && data.content.size() <= 10000 &&
-             data.date is string && data.date.size() <= 20 &&
+             (data.date == null || data.date is string) &&
+             (data.category == null || (data.category is string && data.category.size() <= 50)) &&
              (data.isNew == null || data.isNew is bool) &&
              (data.updatedAt == null || data.updatedAt is timestamp);
     }

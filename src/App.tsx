@@ -12,7 +12,7 @@ import Portfolio from './components/Portfolio';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
 import { ScrollToTop } from './components/ScrollToTop';
-import { NoticeModal } from './components/NoticeModal';
+import { BoardModal } from './components/BoardModal';
 import { AdminDashboard } from './components/AdminDashboard';
 
 /**
@@ -20,7 +20,7 @@ import { AdminDashboard } from './components/AdminDashboard';
  * Professionalism meets Innovation.
  */
 export default function App() {
-  const [isNoticeOpen, setIsNoticeOpen] = useState(false);
+  const [isBoardOpen, setIsBoardOpen] = useState(false);
   const [isAdminOpen, setIsAdminOpen] = useState(false);
 
   useEffect(() => {
@@ -43,7 +43,7 @@ export default function App() {
   return (
     <div className="relative min-h-screen">
       <main className="selection:bg-brand selection:text-white">
-        <Header onOpenNotice={() => setIsNoticeOpen(true)} />
+        <Header onOpenNotice={() => setIsBoardOpen(true)} />
         <Hero />
         <Services />
         <About />
@@ -54,7 +54,7 @@ export default function App() {
 
       {/* Fixed UI Elements */}
       <ScrollToTop />
-      <NoticeModal isOpen={isNoticeOpen} onClose={() => setIsNoticeOpen(false)} />
+      <BoardModal isOpen={isBoardOpen} onClose={() => setIsBoardOpen(false)} />
       {isAdminOpen && <AdminDashboard onClose={() => setIsAdminOpen(false)} />}
       
       {/* Background Decorative Element */}

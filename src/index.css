@@ -1,3 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700&family=Nanum+Myeongjo:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap');
+
 @font-face {
   font-family: 'GmarketSans';
   src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansLight.woff') format('woff');
@@ -30,8 +33,6 @@
   font-style: normal;
 }
 
-@import url('https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap');
 @font-face {
   font-family: 'Ethnocentric';
   src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2302@1.0/Ethnocentric.woff2') format('woff2');
@@ -42,7 +43,10 @@
 
 @theme {
   --font-sans: "GmarketSans", ui-sans-serif, system-ui, sans-serif;
-  --font-barun: "NanumBarunGothic", sans-serif;
+  --font-gmarket: "GmarketSans", sans-serif;
+  --font-nanum-gothic: "Nanum Gothic", sans-serif;
+  --font-nanum-myeongjo: "Nanum Myeongjo", serif;
+  --font-nanum-barun: "NanumBarunGothic", sans-serif;
   --font-display: "GmarketSans", sans-serif;
   --font-ethno: "Ethnocentric", sans-serif;
   --font-serif: "Nanum Myeongjo", serif;

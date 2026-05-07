@@ -14,7 +14,7 @@ export default function Header({ onOpenNotice }: HeaderProps) {
     { label: '회사소개', id: 'about' },
     { label: '포트폴리오', id: 'portfolio' },
     { label: '저가형 AI영상 예시', id: 'ai-products' },
-    { label: '공지사항', id: 'notice' }
+    { label: '게시판', id: 'board' }
   ];
 
   const handleNavClick = () => {
@@ -48,7 +48,7 @@ export default function Header({ onOpenNotice }: HeaderProps) {
             <button
               key={item.id}
               onClick={() => {
-                if (item.id === 'notice') {
+                if (item.id === 'board') {
                   onOpenNotice();
                 } else {
                   window.location.hash = item.id;
@@ -99,7 +99,7 @@ export default function Header({ onOpenNotice }: HeaderProps) {
                     key={item.id}
                     onClick={() => {
                       handleNavClick();
-                      if (item.id === 'notice') {
+                      if (item.id === 'board') {
                         onOpenNotice();
                       } else {
                         window.location.hash = item.id;
