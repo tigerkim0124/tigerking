@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, lazy, Suspense } from 'react';
 import Header from './components/Header';
 import Hero from './components/Hero';
 import About from './components/About';
@@ -12,8 +12,9 @@ import Portfolio from './components/Portfolio';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
 import { ScrollToTop } from './components/ScrollToTop';
-import { BoardModal } from './components/BoardModal';
-import { AdminDashboard } from './components/AdminDashboard';
+
+const BoardModal = lazy(() => import('./components/BoardModal').then(m => ({ default: m.BoardModal })));
+const AdminDashboard = lazy(() => import('./components/AdminDashboard').then(m => ({ default: m.AdminDashboard })));
 
 /**
  * AIK CONTENTS - Video Production Agency Website
@@ -54,8 +55,10 @@ export default function App() {
 
       {/* Fixed UI Elements */}
       <ScrollToTop />
-      <BoardModal isOpen={isBoardOpen} onClose={() => setIsBoardOpen(false)} />
-      {isAdminOpen && <AdminDashboard onClose={() => setIsAdminOpen(false)} />}
+      <Suspense fallback={null}>
+        <BoardModal isOpen={isBoardOpen} onClose={() => setIsBoardOpen(false)} />
+        {isAdminOpen && <AdminDashboard onClose={() => setIsAdminOpen(false)} />}
+      </Suspense>
       
       {/* Background Decorative Element */}
       <div className="fixed inset-0 z-[-1] pointer-events-none overflow-hidden bg-white">

@@ -39,17 +39,18 @@ service cloud.firestore {
       // Allow write access (UI password protection handles access control)
       allow create: if isValidPost(incoming()) && isValidId(postId);
       allow update: if isValidPost(incoming()) && (
-        incoming().diff(existing()).affectedKeys().hasOnly(['title', 'content', 'date', 'isNew', 'updatedAt'])
+        incoming().diff(existing()).affectedKeys().hasOnly(['title', 'content', 'date', 'isNew', 'updatedAt', 'category'])
       );
       allow delete: if true;
     }
 
     function isValidPost(data) {
-      return data.title is string && data.title.size() <= 200 &&
-             data.content is string && data.content.size() <= 10000 &&
+      return data.title is string && data.title.size() <= 300 &&
+             data.content is string && data.content.size() <= 1000000 && // Increased for images
              (data.date == null || data.date is string) &&
-             (data.category == null || (data.category is string && data.category.size() <= 50)) &&
+             (data.category == null || (data.category is string && data.category.size() <= 100)) &&
              (data.isNew == null || data.isNew is bool) &&
+             (data.createdAt == null || data.createdAt is timestamp) &&
              (data.updatedAt == null || data.updatedAt is timestamp);
     }
 
