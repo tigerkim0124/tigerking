@@ -1,7 +1,16 @@
 import { initializeApp } from 'firebase/app';
 import { getAuth, GoogleAuthProvider, signInWithPopup, signOut } from 'firebase/auth';
 import { getFirestore, doc, getDocFromServer } from 'firebase/firestore';
-import firebaseConfig from '../../firebase-applet-config.json';
+// Firebase configuration from environment variables (Vite prefix VITE_)
+const firebaseConfig = {
+  apiKey: import.meta.env.AIzaSyCtDtaUSRBfFqHWrLJxSOCf1tkCoHBABLw,
+  authDomain: import.meta.env.gen-lang-client-0857775553.firebaseapp.com,
+  projectId: import.meta.env.gen-lang-client-0857775553,
+  storageBucket: import.meta.env.gen-lang-client-0857775553.firebasestorage.app,
+  messagingSenderId: import.meta.env.265345450031,
+  appId: import.meta.env.1:265345450031:web:c0021dca323ea90912c6da,
+  firestoreDatabaseId: import.meta.env.VITE_FIREBASE_DATABASE_ID || '(default)'
+};
 
 // Global flags and instances
 let app;
