@@ -47,5 +47,18 @@ async function testConnection() {
 }
 testConnection();
 
-export const signInWithGoogle = () => signInWithPopup(auth, googleProvider);
-export const logout = () => signOut(auth);
+export const signInWithGoogle = () => {
+  if (!auth || !googleProvider) {
+    console.error("Firebase Auth or Google Provider not initialized");
+    return Promise.reject("Firebase not initialized");
+  }
+  return signInWithPopup(auth, googleProvider);
+};
+
+export const logout = () => {
+  if (!auth) {
+    console.error("Firebase Auth not initialized");
+    return Promise.resolve();
+  }
+  return signOut(auth);
+};

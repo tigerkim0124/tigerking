@@ -10,7 +10,8 @@ import {
   deleteDoc, 
   doc, 
   serverTimestamp,
-  getDoc
+  getDoc,
+  limit
 } from 'firebase/firestore';
 import { onAuthStateChanged, User } from 'firebase/auth';
 import { db, auth, signInWithGoogle, logout } from '../lib/firebase';
@@ -68,7 +69,7 @@ export function AdminDashboard({ onClose }: { onClose: () => void }) {
   useEffect(() => {
     if (!isAdmin || !db) return;
 
-    const q = query(collection(db, 'notices'), orderBy('createdAt', 'desc'));
+    const q = query(collection(db, 'notices'), orderBy('createdAt', 'desc'), limit(50));
     const unsubscribe = onSnapshot(q, (snapshot) => {
       const docs = snapshot.docs.map(doc => ({
         id: doc.id,
@@ -140,7 +141,16 @@ export function AdminDashboard({ onClose }: { onClose: () => void }) {
         </div>
         <div className="flex items-center gap-4">
           <span className="text-sm text-gray-500 hidden sm:inline">{user?.email}</span>
-          <button onClick={logout} className="p-2 hover:bg-gray-100 rounded-full transition-colors cursor-pointer">
+          <button 
+            onClick={async () => {
+              try {
+                await logout();
+              } catch (e) {
+                console.error("Logout failed", e);
+              }
+            }} 
+            className="p-2 hover:bg-gray-100 rounded-full transition-colors cursor-pointer"
+          >
             <LogOut className="w-5 h-5 text-gray-500" />
           </button>
           <button onClick={onClose} className="p-2 hover:bg-gray-100 rounded-full transition-colors cursor-pointer">
@@ -165,14 +175,12 @@ export function AdminDashboard({ onClose }: { onClose: () => void }) {
                   id="admin-login-button"
                   onClick={async (e) => {
                     e.stopPropagation();
-                    console.log("Login button clicked");
                     try {
                       if (!auth) {
                         alert("Firebase 설정이 완료되지 않았습니다. .env 설정 혹은 firebase-applet-config.json 파일을 확인해주세요.");
                         return;
                       }
                       await signInWithGoogle();
-                      console.log("Login success");
                     } catch (error) {
                       console.error("Login failed:", error);
                       alert("로그인 중 오류가 발생했습니다: " + (error as Error).message);

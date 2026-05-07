@@ -121,6 +121,7 @@ export default function Portfolio() {
                   className="w-full h-full border-0"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                   allowFullScreen
+                  loading="lazy"
                 />
               </div>
 
@@ -167,6 +168,7 @@ export default function Portfolio() {
                     className="w-full h-full opacity-90 group-hover:opacity-100 transition-opacity duration-500"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                     allowFullScreen
+                    loading="lazy"
                   ></iframe>
                 </div>
 
