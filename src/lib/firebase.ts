@@ -13,23 +13,36 @@ const firebaseConfig = {
   firestoreDatabaseId: import.meta.env.VITE_FIREBASE_DATABASE_ID || '(default)'
 };
 
-// Check if critical config is missing and log clearly
-if (!firebaseConfig.apiKey || firebaseConfig.apiKey === '') {
-  console.error('CRITICAL: Firebase Configuration is missing! Please check VITE_FIREBASE_ environment variables.');
+// Global flags and instances
+let app;
+let db: any;
+let auth: any;
+let googleProvider: any;
+
+// Safe initialization
+if (firebaseConfig.apiKey) {
+  try {
+    app = initializeApp(firebaseConfig);
+    db = getFirestore(app, firebaseConfig.firestoreDatabaseId);
+    auth = getAuth(app);
+    googleProvider = new GoogleAuthProvider();
+    console.log("Firebase initialized successfully.");
+  } catch (error) {
+    console.error("Firebase initialization failed:", error);
+  }
+} else {
+  console.warn("Firebase Configuration is missing. Remote features will be unavailable.");
 }
 
-const app = initializeApp(firebaseConfig);
-export const db = getFirestore(app, firebaseConfig.firestoreDatabaseId);
-export const auth = getAuth(app);
-export const googleProvider = new GoogleAuthProvider();
+export { db, auth, googleProvider };
 
-// Validation test - only if config exists
+// Validation test - only if initialized
 async function testConnection() {
-  if (!firebaseConfig.apiKey) return;
+  if (!db) return;
   try {
     await getDocFromServer(doc(db, 'test', 'connection'));
   } catch (error) {
-    console.warn("Firebase connection test failed. This is expected if rules are strict.");
+    // Expected in many cases
   }
 }
 testConnection();

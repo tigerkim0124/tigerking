@@ -34,6 +34,11 @@ export function NoticeModal({ isOpen, onClose }: NoticeModalProps) {
   useEffect(() => {
     if (!isOpen) return;
 
+    if (!db) {
+      setLoading(false);
+      return;
+    }
+
     const path = 'notices';
     const q = query(collection(db, path), orderBy('createdAt', 'desc'));
     

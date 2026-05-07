@@ -37,15 +37,24 @@ export function AdminDashboard({ onClose }: { onClose: () => void }) {
 
   useEffect(() => {
     setMounted(true);
+    if (!auth) {
+      setLoading(false);
+      return;
+    }
     const unsubscribeAuth = onAuthStateChanged(auth, async (user) => {
       setUser(user);
-      if (user) {
-        const adminDoc = await getDoc(doc(db, 'admins', user.uid));
-        // Also check by email to bootstrap
-        if (adminDoc.exists() || user.email === 'tigerkim0124@gmail.com') {
-          setIsAdmin(true);
-        } else {
-          setIsAdmin(false);
+      if (user && db) {
+        try {
+          const adminDoc = await getDoc(doc(db, 'admins', user.uid));
+          // Also check by email to bootstrap
+          if (adminDoc.exists() || user.email === 'tigerkim0124@gmail.com') {
+            setIsAdmin(true);
+          } else {
+            setIsAdmin(false);
+          }
+        } catch (e) {
+          console.warn("Error checking admin status:", e);
+          if (user.email === 'tigerkim0124@gmail.com') setIsAdmin(true);
         }
       } else {
         setIsAdmin(false);
@@ -57,7 +66,7 @@ export function AdminDashboard({ onClose }: { onClose: () => void }) {
   }, []);
 
   useEffect(() => {
-    if (!isAdmin) return;
+    if (!isAdmin || !db) return;
 
     const q = query(collection(db, 'notices'), orderBy('createdAt', 'desc'));
     const unsubscribe = onSnapshot(q, (snapshot) => {
@@ -76,7 +85,7 @@ export function AdminDashboard({ onClose }: { onClose: () => void }) {
     if (!currentNotice.title || !currentNotice.content || !currentNotice.date) return;
 
     try {
-      if (currentNotice.id) {
+      if (currentNotice.id && db) {
         await updateDoc(doc(db, 'notices', currentNotice.id), {
           title: currentNotice.title,
           content: currentNotice.content,
@@ -84,7 +93,7 @@ export function AdminDashboard({ onClose }: { onClose: () => void }) {
           isNew: currentNotice.isNew || false,
           updatedAt: serverTimestamp()
         });
-      } else {
+      } else if (db) {
         await addDoc(collection(db, 'notices'), {
           ...currentNotice,
           isNew: currentNotice.isNew || false,
@@ -96,13 +105,14 @@ export function AdminDashboard({ onClose }: { onClose: () => void }) {
       setCurrentNotice({});
     } catch (error) {
       console.error("Error saving notice:", error);
+      alert("저장에 실패했습니다. Firebase 설정을 확인해주세요.");
     }
   };
 
   const handleDelete = async (id: string) => {
     if (confirm('정말로 이 공지사항을 삭제하시겠습니까?')) {
       try {
-        await deleteDoc(doc(db, 'notices', id));
+        if (db) await deleteDoc(doc(db, 'notices', id));
       } catch (error) {
         console.error("Error deleting notice:", error);
       }
