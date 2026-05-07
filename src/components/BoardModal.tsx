@@ -1,20 +1,27 @@
-import { useState, useEffect } from 'react';
-import { createPortal } from 'react-dom';
-import { X, ChevronLeft, ExternalLink, Home } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
+import { 
+  X, 
+  Search, 
+  ExternalLink, 
+  Clock, 
+  ChevronRight,
+  Megaphone,
+  Bell,
+  ArrowRight
+} from 'lucide-react';
 import { collection, query, orderBy, onSnapshot, limit } from 'firebase/firestore';
 import { db } from '../lib/firebase';
 import ReactMarkdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
 import rehypeRaw from 'rehype-raw';
 
-interface Post {
+interface Notice {
   id: string;
-  date: string;
   title: string;
   content: string;
-  category?: string;
-  isNew?: boolean;
+  date: string;
+  isNew: boolean;
+  createdAt: any;
 }
 
 interface BoardModalProps {
@@ -22,243 +29,181 @@ interface BoardModalProps {
   onClose: () => void;
 }
 
-enum OperationType {
-  LIST = 'list',
-}
-
-const getYoutubeId = (url: string) => {
-  const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
-  const match = url.match(regExp);
-  return (match && match[2].length === 11) ? match[2] : null;
-};
-
 export function BoardModal({ isOpen, onClose }: BoardModalProps) {
-  const [posts, setPosts] = useState<Post[]>([]);
-  const [selectedPost, setSelectedPost] = useState<Post | null>(null);
+  const [notices, setNotices] = useState<Notice[]>([]);
+  const [selectedNotice, setSelectedNotice] = useState<Notice | null>(null);
   const [loading, setLoading] = useState(true);
-  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setMounted(true);
-  }, []);
+    if (!isOpen || !db) return;
 
-  useEffect(() => {
-    if (!isOpen) return;
-
-    if (!db) {
-      setLoading(false);
-      return;
-    }
-
-    const path = 'posts';
-    const q = query(collection(db, path), orderBy('createdAt', 'desc'), limit(20));
+    setLoading(true);
+    const q = query(collection(db, 'posts'), orderBy('createdAt', 'desc'), limit(30));
     
     const unsubscribe = onSnapshot(q, (snapshot) => {
       const docs = snapshot.docs.map(doc => ({
         id: doc.id,
         ...doc.data()
-      })) as Post[];
-      setPosts(docs);
+      })) as Notice[];
+      setNotices(docs);
       setLoading(false);
     }, (error) => {
-      console.error('Firestore Error Listing Posts: ', JSON.stringify({
-        error: error.message,
-        operationType: OperationType.LIST,
-        path
-      }));
+      console.error("Board sync error:", error);
       setLoading(false);
     });
 
     return () => unsubscribe();
   }, [isOpen]);
 
-  if (!mounted) return null;
+  if (!isOpen) return null;
 
-  return createPortal(
-    <AnimatePresence>
-      {isOpen && (
-        <div className="fixed inset-0 z-[10000] flex items-center justify-center p-4">
-          {/* Backdrop */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={onClose}
-            className="absolute inset-0 bg-black/40 backdrop-blur-sm"
-          />
-          
-          {/* Modal Content */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95, y: 30 }}
-            animate={{ 
-              opacity: 1, 
-              scale: 1, 
-              y: 0,
-              width: selectedPost ? '100%' : 'auto',
-              maxWidth: selectedPost ? '100%' : '42rem',
-              height: selectedPost ? '100%' : 'auto',
-              borderRadius: selectedPost ? '0px' : '1rem'
-            }}
-            exit={{ opacity: 0, scale: 0.95, y: 30 }}
-            className={`relative w-full bg-white shadow-2xl z-[10001] overflow-hidden transition-all duration-300 ${selectedPost ? 'm-0 p-0' : 'max-w-2xl rounded-2xl'}`}
-          >
-            {/* Header */}
-            <div className={`bg-[#0c468c] px-6 py-4 flex items-center justify-between ${selectedPost ? 'sticky top-0 z-20' : ''}`}>
-              <div className="flex items-center gap-2">
-                {selectedPost && (
-                  <button 
-                    onClick={() => setSelectedPost(null)}
-                    className="mr-2 text-white/80 hover:text-white transition-colors cursor-pointer p-1 hover:bg-white/10 rounded-full"
-                  >
-                    <ChevronLeft className="w-6 h-6" />
-                  </button>
-                )}
-                <h2 className="text-white font-bold text-lg">
-                  {selectedPost ? '게시글 상세' : 'AIK CONTENTS 게시판'}
-                </h2>
-              </div>
-              <div className="flex items-center gap-3">
-                {selectedPost && (
-                  <button 
-                    onClick={onClose}
-                    className="flex items-center gap-1.5 px-3 py-1.5 bg-white/10 hover:bg-white/20 text-white rounded-lg transition-colors cursor-pointer text-sm font-medium"
-                  >
-                    <Home className="w-4 h-4" />
-                    메인으로
-                  </button>
-                )}
-                <button 
-                  onClick={onClose}
-                  className="text-white/80 hover:text-white transition-colors cursor-pointer"
-                >
-                  <X className="w-6 h-6" />
-                </button>
-              </div>
+  return (
+    <div className="fixed inset-0 z-[11000] flex items-center justify-center p-4 md:p-6 lg:p-10 pointer-events-none">
+      {/* Backdrop */}
+      <motion.div 
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        onClick={onClose}
+        className="absolute inset-0 bg-black/60 backdrop-blur-md pointer-events-auto"
+      />
+
+      {/* Main Container */}
+      <motion.div 
+        initial={{ opacity: 0, scale: 0.95, y: 20 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        exit={{ opacity: 0, scale: 0.95, y: 20 }}
+        className="relative w-full max-w-4xl max-h-[85vh] bg-white rounded-[2.5rem] shadow-2xl overflow-hidden flex flex-col pointer-events-auto border border-white/20 font-sans"
+      >
+        {/* Header */}
+        <header className="h-[72px] flex items-center justify-between px-8 bg-white border-b border-gray-50 flex-shrink-0">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 bg-[#0c468c] rounded-2xl flex items-center justify-center rotate-3 shadow-lg">
+              <Megaphone className="w-5 h-5 text-white" />
             </div>
+            <div>
+              <h2 className="text-xl font-bold text-gray-900 tracking-tight">공지사항</h2>
+              <p className="text-[10px] font-bold text-[#0c468c] uppercase tracking-widest mt-0.5 opacity-60">AIK Contents Notice Board</p>
+            </div>
+          </div>
+          <button 
+            onClick={onClose}
+            className="p-2.5 hover:bg-gray-100 rounded-full transition-colors cursor-pointer group"
+          >
+            <X className="w-6 h-6 text-gray-400 group-hover:text-gray-900" />
+          </button>
+        </header>
 
-            {/* Content Area */}
-            <div className={`${selectedPost ? 'h-[calc(100vh-64px)]' : 'max-h-[75vh]'} overflow-y-auto overflow-x-hidden`}>
-              <AnimatePresence mode="wait">
-                {!selectedPost ? (
-                  <motion.div 
-                    key="list"
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: -20 }}
-                    className="p-6 space-y-6"
-                  >
-                    {loading ? (
-                      <div className="text-center py-10 text-black/40">불러오는 중...</div>
-                    ) : posts.length > 0 ? (
-                      posts.map((post) => (
-                        <div 
-                          key={post.id} 
-                          onClick={() => setSelectedPost(post)}
-                          className="group border-b border-black/5 pb-6 last:border-0 last:pb-0 cursor-pointer hover:bg-gray-50/50 transition-colors p-3 rounded-xl -m-3"
-                        >
-                          <div className="flex items-center gap-3 mb-2">
-                            {post.isNew && (
-                              <span className="text-[10px] font-bold text-white bg-red-500 px-1.5 py-0.5 rounded-sm animate-pulse">
-                                NEW
+        {/* Content Area */}
+        <div className="flex-1 overflow-hidden flex flex-col lg:flex-row">
+          {/* List Section */}
+          <div className={`flex-1 overflow-y-auto bg-white transition-all duration-300 ${selectedNotice ? 'hidden lg:block lg:w-[40%] bg-gray-50/30 border-r border-gray-50' : 'w-full'}`}>
+            <div className="p-6 md:p-8 space-y-4">
+              {loading ? (
+                <div className="py-20 flex justify-center">
+                  <div className="w-8 h-8 border-3 border-[#0c468c]/20 border-t-[#0c468c] rounded-full animate-spin" />
+                </div>
+              ) : notices.length > 0 ? (
+                <div className="grid gap-3">
+                  {notices.map((notice) => (
+                    <motion.button
+                      key={notice.id}
+                      onClick={() => setSelectedNotice(notice)}
+                      layoutId={`notice-${notice.id}`}
+                      className={`w-full text-left p-5 rounded-3xl transition-all border ${
+                        selectedNotice?.id === notice.id 
+                          ? 'bg-white border-white shadow-xl ring-1 ring-gray-100' 
+                          : 'bg-white border-gray-50 hover:border-gray-200'
+                      }`}
+                    >
+                      <div className="flex items-start justify-between gap-4">
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2 mb-2">
+                            {notice.isNew && (
+                              <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-[#0c468c] text-white text-[9px] font-bold rounded-full">
+                                <Bell className="w-2.5 h-2.5" /> NEW
                               </span>
                             )}
+                            <span className="text-[11px] font-bold text-gray-400 tracking-tighter uppercase">
+                              {notice.date || notice.createdAt?.toDate().toLocaleDateString('ko-KR')}
+                            </span>
                           </div>
-                          <h3 className="text-[1.1rem] font-bold text-black mb-2 group-hover:text-[#0c468c] transition-colors">{post.title}</h3>
-                          <p className="text-[0.9rem] text-black/40 line-clamp-2 font-light">
-                            {post.content.replace(/[#*`<>\/]/g, '').replace(/style="[^"]*"/g, '')}
-                          </p>
+                          <h3 className={`text-base font-bold leading-tight line-clamp-2 ${selectedNotice?.id === notice.id ? 'text-[#0c468c]' : 'text-gray-800'}`}>
+                            {notice.title}
+                          </h3>
                         </div>
-                      ))
-                    ) : (
-                      <div className="text-center py-10 text-black/40">등록된 게시글이 없습니다.</div>
-                    )}
-                  </motion.div>
-                ) : (
-                  <motion.div 
-                    key="detail"
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: 20 }}
-                    className="p-8 max-w-4xl mx-auto"
-                  >
-                    <div className="mb-8">
-                      <div className="flex items-center gap-3 mb-4">
-                        {selectedPost.isNew && (
-                          <span className="text-[10px] font-bold text-white bg-red-500 px-1.5 py-0.5 rounded-sm">
-                            NEW
-                          </span>
-                        )}
+                        <div className={`p-2 rounded-xl transition-colors shrink-0 ${selectedNotice?.id === notice.id ? 'bg-[#0c468c] text-white' : 'bg-gray-50 text-gray-400 group-hover:text-gray-900 group-hover:bg-gray-100'}`}>
+                          <ChevronRight className="w-4 h-4" />
+                        </div>
                       </div>
-                      <h3 className="text-3xl md:text-4xl font-bold text-black leading-tight border-b-4 border-[#0c468c]/10 pb-6">
-                        {selectedPost.title}
-                      </h3>
-                    </div>
-                    
-                    <div className="prose prose-blue max-w-none prose-img:rounded-2xl prose-img:shadow-xl prose-a:text-blue-600 prose-a:no-underline hover:prose-a:underline prose-p:text-gray-700 prose-p:leading-relaxed">
-                      <ReactMarkdown 
-                        remarkPlugins={[remarkGfm]}
-                        rehypePlugins={[rehypeRaw]}
-                        components={{
-                          a: ({ node, ...props }) => {
-                            const youtubeId = props.href ? getYoutubeId(props.href) : null;
-                            if (youtubeId) {
-                              return (
-                                <div className="my-8 aspect-video w-full rounded-2xl overflow-hidden shadow-2xl bg-black">
-                                  <iframe
-                                    width="100%"
-                                    height="100%"
-                                    src={`https://www.youtube.com/embed/${youtubeId}`}
-                                    title="YouTube video player"
-                                    frameBorder="0"
-                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                                    allowFullScreen
-                                  ></iframe>
-                                </div>
-                              );
-                            }
-                            return (
-                              <a target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-blue-600 font-medium hover:underline" {...props}>
-                                <ExternalLink className="w-3 h-3" />
-                                {props.children}
-                              </a>
-                            );
-                          },
-                          img: ({ node, ...props }) => <img className="max-w-full h-auto" loading="lazy" {...props} />
-                        }}
-                      >
-                        {selectedPost.content}
-                      </ReactMarkdown>
-                    </div>
-
-                    <div className="mt-20 flex justify-center pb-10">
-                      <button 
-                        onClick={() => setSelectedPost(null)}
-                        className="flex items-center gap-2 px-8 py-3 bg-[#0c468c] text-white rounded-full font-bold hover:bg-[#0c468c]/90 transition-all shadow-lg active:scale-95 cursor-pointer"
-                      >
-                        <ChevronLeft className="w-5 h-5" />
-                        목록으로 돌아가기
-                      </button>
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
+                    </motion.button>
+                  ))}
+                </div>
+              ) : (
+                <div className="py-32 text-center text-gray-300">
+                  <Megaphone className="w-12 h-12 mx-auto mb-4 opacity-10" />
+                  <p className="text-sm font-medium tracking-tight">등록된 공지사항이 없습니다.</p>
+                </div>
+              )}
             </div>
+          </div>
 
-            {/* Footer - Only show in list mode */}
-            {!selectedPost && (
-              <div className="bg-gray-50 px-6 py-4 flex justify-end">
-                <button
-                  onClick={onClose}
-                  className="px-5 py-2 bg-black text-white text-sm font-bold rounded-lg hover:bg-black/80 transition-colors cursor-pointer"
+          {/* Viewer Section */}
+          <div className={`flex-1 overflow-y-auto bg-white transition-all duration-500 ${selectedNotice ? 'block' : 'hidden lg:flex items-center justify-center bg-gray-50/50'}`}>
+            <AnimatePresence mode="wait">
+              {selectedNotice ? (
+                <motion.div 
+                  key={selectedNotice.id}
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -20 }}
+                  className="h-full flex flex-col p-8 md:p-12"
                 >
-                  닫기
-                </button>
-              </div>
-            )}
-          </motion.div>
+                  <button 
+                    onClick={() => setSelectedNotice(null)}
+                    className="lg:hidden flex items-center gap-2 text-sm font-bold text-[#0c468c] mb-8 cursor-pointer"
+                  >
+                    <ChevronRight className="w-4 h-4 rotate-180" /> 목록으로 돌아가기
+                  </button>
+
+                  <div className="max-w-2xl mx-auto w-full">
+                    <div className="space-y-4 mb-10 pb-10 border-b border-gray-100">
+                      <div className="flex items-center gap-2">
+                        {selectedNotice.isNew && <span className="px-2 py-0.5 bg-[#0c468c] text-white text-[9px] font-bold rounded-full">NEW NOTICE</span>}
+                        <span className="text-xs font-bold text-gray-400 uppercase tracking-widest flex items-center gap-2">
+                          <Clock className="w-3.5 h-3.5" />
+                          {selectedNotice.date || selectedNotice.createdAt?.toDate().toLocaleDateString('ko-KR')}
+                        </span>
+                      </div>
+                      <h1 className="text-3xl md:text-4xl font-bold text-gray-900 leading-[1.2] tracking-tight">
+                        {selectedNotice.title}
+                      </h1>
+                    </div>
+
+                    <article className="prose prose-blue max-w-none prose-p:leading-relaxed prose-headings:font-bold prose-img:rounded-3xl prose-img:shadow-lg prose-a:text-[#0c468c] prose-a:no-underline hover:prose-a:underline">
+                      <div className="markdown-content text-gray-600">
+                        <ReactMarkdown rehypePlugins={[rehypeRaw]}>
+                          {selectedNotice.content}
+                        </ReactMarkdown>
+                      </div>
+                    </article>
+                  </div>
+                </motion.div>
+              ) : (
+                <div className="text-center p-20 space-y-4 max-w-xs opacity-40">
+                  <div className="w-16 h-16 bg-gray-100 rounded-3xl mx-auto flex items-center justify-center">
+                    <Bell className="w-8 h-8 text-gray-300" />
+                  </div>
+                  <div className="space-y-1">
+                    <p className="text-base font-bold text-gray-900 tracking-tight">공지를 선택하세요</p>
+                    <p className="text-[11px] font-medium text-gray-400">좌측 리스트에서 상세 내용을 확인하고 싶은 소식을 클릭해주세요.</p>
+                  </div>
+                </div>
+              )}
+            </AnimatePresence>
+          </div>
         </div>
-      )}
-    </AnimatePresence>,
-    document.body
+      </motion.div>
+    </div>
   );
 }

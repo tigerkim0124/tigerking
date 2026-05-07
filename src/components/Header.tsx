@@ -14,7 +14,7 @@ export default function Header({ onOpenNotice }: HeaderProps) {
     { label: '회사소개', id: 'about' },
     { label: '포트폴리오', id: 'portfolio' },
     { label: '저가형 AI영상 예시', id: 'ai-products' },
-    { label: '게시판', id: 'board' }
+    { label: '공지사항', id: 'board' }
   ];
 
   const handleNavClick = () => {
