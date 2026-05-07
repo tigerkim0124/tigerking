@@ -122,12 +122,17 @@ export function AdminDashboard({ onClose }: { onClose: () => void }) {
   if (!mounted) return null;
 
   if (loading) return createPortal(
-    <div className="fixed inset-0 bg-white flex items-center justify-center z-[20000]">불러오는 중...</div>,
+    <div className="fixed inset-0 bg-white flex items-center justify-center z-[99999] pointer-events-auto">
+      <div className="flex flex-col items-center gap-4">
+        <div className="w-12 h-12 border-4 border-[#0c468c] border-t-transparent rounded-full animate-spin" />
+        <p className="text-gray-500 font-medium">데이터를 불러오는 중...</p>
+      </div>
+    </div>,
     document.body
   );
 
   return createPortal(
-    <div className="fixed inset-0 bg-gray-50 z-[20000] overflow-y-auto">
+    <div className="fixed inset-0 bg-gray-50 z-[99998] overflow-y-auto pointer-events-auto">
       <header className="bg-white border-b border-gray-200 sticky top-0 z-10 px-6 py-4 flex items-center justify-between">
         <div className="flex items-center gap-4">
           <LayoutDashboard className="w-6 h-6 text-[#0c468c]" />
@@ -145,24 +150,59 @@ export function AdminDashboard({ onClose }: { onClose: () => void }) {
       </header>
 
       {!user || !isAdmin ? (
-        <div className="flex flex-col items-center justify-center min-h-[calc(100vh-80px)] p-6">
-          <h1 className="text-2xl font-bold mb-6">관리자 로그인</h1>
-          {!user ? (
-            <button 
-              onClick={signInWithGoogle}
-              className="flex items-center gap-3 px-6 py-3 bg-black text-white rounded-lg font-bold hover:bg-black/80 transition-all cursor-pointer"
-            >
-              Google 계정으로 로그인
-            </button>
-          ) : (
-            <div className="text-center">
-              <p className="text-red-500 mb-4">관리자 권한이 없습니다. ({user.email})</p>
-              <button onClick={logout} className="text-sm underline cursor-pointer">로그아웃</button>
-            </div>
-          )}
-          <button onClick={onClose} className="mt-8 text-black/40 hover:text-black flex items-center gap-1 cursor-pointer">
-            <ChevronLeft className="w-4 h-4" /> 메인으로 돌아가기
-          </button>
+        <div className="flex flex-col items-center justify-center min-h-[calc(100vh-80px)] p-6 bg-gray-50">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="w-full max-w-md bg-white p-8 rounded-2xl shadow-xl text-center"
+          >
+            <h1 className="text-2xl font-bold mb-2">관리자 로그인</h1>
+            <p className="text-gray-500 mb-8">AIK 공지사항 관리를 위해 로그인해 주세요.</p>
+            
+            {!user ? (
+              <div className="flex flex-col items-center gap-4">
+                <button 
+                  id="admin-login-button"
+                  onClick={async (e) => {
+                    e.stopPropagation();
+                    console.log("Login button clicked");
+                    try {
+                      if (!auth) {
+                        alert("Firebase 설정이 완료되지 않았습니다. .env 설정 혹은 firebase-applet-config.json 파일을 확인해주세요.");
+                        return;
+                      }
+                      await signInWithGoogle();
+                      console.log("Login success");
+                    } catch (error) {
+                      console.error("Login failed:", error);
+                      alert("로그인 중 오류가 발생했습니다: " + (error as Error).message);
+                    }
+                  }}
+                  className="w-full flex items-center justify-center gap-3 px-6 py-4 bg-black text-white rounded-xl font-bold hover:bg-black/80 transition-all cursor-pointer shadow-lg active:scale-95 group"
+                >
+                  <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/smartlock/google.svg" alt="" className="w-5 h-5 bg-white rounded-full p-0.5 group-hover:scale-110 transition-transform" />
+                  Google 계정으로 로그인
+                </button>
+                {!auth && <p className="text-xs text-red-500 font-medium">관리자 전용: Firebase API Key 설정이 필요합니다.</p>}
+              </div>
+            ) : (
+              <div className="text-center">
+                <div className="inline-flex items-center justify-center w-16 h-16 bg-red-50 rounded-full mb-4">
+                  <X className="w-8 h-8 text-red-500" />
+                </div>
+                <p className="text-red-500 font-bold mb-1">접근 권한 없음</p>
+                <p className="text-sm text-gray-500 mb-6">관리자 승인이 필요한 계정입니다.<br/>({user.email})</p>
+                <div className="flex flex-col gap-3">
+                  <button onClick={logout} className="w-full py-2 bg-gray-100 text-gray-600 rounded-lg font-bold hover:bg-gray-200 transition-colors cursor-pointer">
+                    다른 계정으로 로그인
+                  </button>
+                  <button onClick={onClose} className="text-sm text-gray-400 hover:text-gray-600 transition-colors cursor-pointer">
+                    홈으로 돌아가기
+                  </button>
+                </div>
+              </div>
+            )}
+          </motion.div>
         </div>
       ) : (
         <main className="max-w-5xl mx-auto p-6">
