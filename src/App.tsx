@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Header from './components/Header';
 import Hero from './components/Hero';
 import About from './components/About';
@@ -11,12 +11,18 @@ import Services from './components/Services';
 import Portfolio from './components/Portfolio';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
+import { ScrollToTop } from './components/ScrollToTop';
+import { NoticeModal } from './components/NoticeModal';
+import { AdminDashboard } from './components/AdminDashboard';
 
 /**
  * AIK CONTENTS - Video Production Agency Website
  * Professionalism meets Innovation.
  */
 export default function App() {
+  const [isNoticeOpen, setIsNoticeOpen] = useState(false);
+  const [isAdminOpen, setIsAdminOpen] = useState(false);
+
   useEffect(() => {
     // Smooth scroll setup for hash links
     const handleHashChange = () => {
@@ -36,13 +42,16 @@ export default function App() {
 
   return (
     <main className="relative selection:bg-brand selection:text-white">
-      <Header />
+      <Header onOpenNotice={() => setIsNoticeOpen(true)} />
       <Hero />
       <Services />
       <About />
       <Portfolio />
       <Contact />
-      <Footer />
+      <Footer onAdminTrigger={() => setIsAdminOpen(true)} />
+      <ScrollToTop />
+      <NoticeModal isOpen={isNoticeOpen} onClose={() => setIsNoticeOpen(false)} />
+      {isAdminOpen && <AdminDashboard onClose={() => setIsAdminOpen(false)} />}
       
       {/* Background Decorative Element */}
       <div className="fixed inset-0 z-[-1] pointer-events-none overflow-hidden bg-white">

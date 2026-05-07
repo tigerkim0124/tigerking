@@ -1,7 +1,11 @@
 import { motion } from 'motion/react';
 import { Instagram, Youtube, Linkedin, Twitter } from 'lucide-react';
 
-export default function Footer() {
+interface FooterProps {
+  onAdminTrigger?: () => void;
+}
+
+export default function Footer({ onAdminTrigger }: FooterProps) {
   const currentYear = new Date().getFullYear();
   
   return (
@@ -40,9 +44,19 @@ export default function Footer() {
         </div>
 
         <div className="mt-12 pt-8 border-t border-black/5 flex flex-col md:flex-row justify-end items-center gap-6">
-          
-          <p className="text-[12.75px] font-sans font-medium tracking-normal text-[#8b8c8e]">
-            © {currentYear} AIK CONTENTS KOREA. All rights reserved.
+          <p className="text-[12.75px] font-sans font-medium tracking-normal text-[#8b8c8e] md:text-right w-full md:w-auto">
+            © <span 
+              className="cursor-pointer select-none hover:text-black/40 transition-colors" 
+              onClick={(e) => {
+                if (e.detail === 3) {
+                  console.log("Admin Dashboard Triggered");
+                  onAdminTrigger?.();
+                }
+              }}
+              title="관리자 모드 (세 번 클릭)"
+            >
+              {currentYear}
+            </span> AIK CONTENTS KOREA. All rights reserved.
           </p>
         </div>
       </div>

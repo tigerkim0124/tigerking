@@ -1,0 +1,57 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Default deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Helper functions
+    function isSignedIn() {
+      return request.auth != null;
+    }
+    
+    function isAdmin() {
+      return isSignedIn() && exists(/databases/$(database)/documents/admins/$(request.auth.uid));
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    // Notices collection
+    match /notices/{noticeId} {
+      // Anyone can read notices
+      allow get, list: if true;
+      
+      // Only admins can write
+      allow create: if isAdmin() && isValidNotice(incoming()) && isValidId(noticeId);
+      allow update: if isAdmin() && isValidNotice(incoming()) && (
+        incoming().diff(existing()).affectedKeys().hasOnly(['title', 'content', 'date', 'isNew', 'updatedAt'])
+      );
+      allow delete: if isAdmin();
+    }
+
+    function isValidNotice(data) {
+      return data.title is string && data.title.size() <= 200 &&
+             data.content is string && data.content.size() <= 10000 &&
+             data.date is string && data.date.size() <= 20 &&
+             (data.isNew == null || data.isNew is bool) &&
+             (data.updatedAt == null || data.updatedAt is timestamp);
+    }
+
+    // Admins collection - read-only for security check, only manually manageable via console or owner
+    match /admins/{adminId} {
+      allow get: if isSignedIn() && (request.auth.uid == adminId || isAdmin());
+      allow list: if isAdmin();
+    }
+  }
+}

@@ -2,14 +2,19 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { ExternalLink, Menu, X } from 'lucide-react';
 
-export default function Header() {
+interface HeaderProps {
+  onOpenNotice: () => void;
+}
+
+export default function Header({ onOpenNotice }: HeaderProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   const navItems = [
     { label: '서비스', id: 'services' },
     { label: '회사소개', id: 'about' },
     { label: '포트폴리오', id: 'portfolio' },
-    { label: '저가형 AI영상 예시', id: 'ai-products' }
+    { label: '저가형 AI영상 예시', id: 'ai-products' },
+    { label: '공지사항', id: 'notice' }
   ];
 
   const handleNavClick = () => {
@@ -40,13 +45,19 @@ export default function Header() {
         {/* Desktop Navigation */}
         <nav className="hidden lg:flex items-center gap-10">
           {navItems.map((item) => (
-            <a
+            <button
               key={item.id}
-              href={`#${item.id}`}
-              className="text-[1rem] font-medium text-black/60 hover:text-black hover:font-bold transition-all uppercase tracking-[-0.03em]"
+              onClick={() => {
+                if (item.id === 'notice') {
+                  onOpenNotice();
+                } else {
+                  window.location.hash = item.id;
+                }
+              }}
+              className="text-[1rem] font-medium text-black/60 hover:text-black hover:font-bold transition-all uppercase tracking-[-0.03em] cursor-pointer"
             >
               {item.label}
-            </a>
+            </button>
           ))}
         </nav>
 
@@ -81,17 +92,23 @@ export default function Header() {
             >
               <div className="flex flex-col gap-3.5">
                 {navItems.map((item, idx) => (
-                  <motion.a
+                  <motion.button
                     initial={{ opacity: 0, x: 20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.1 + idx * 0.1 }}
                     key={item.id}
-                    href={`#${item.id}`}
-                    onClick={handleNavClick}
-                    className="text-[1.12rem] font-bold text-black tracking-tighter hover:text-brand transition-colors"
+                    onClick={() => {
+                      handleNavClick();
+                      if (item.id === 'notice') {
+                        onOpenNotice();
+                      } else {
+                        window.location.hash = item.id;
+                      }
+                    }}
+                    className="text-[1.12rem] font-bold text-black tracking-tighter hover:text-brand transition-colors text-left"
                   >
                     {item.label}
-                  </motion.a>
+                  </motion.button>
                 ))}
                 
                 <motion.div
