@@ -3,13 +3,13 @@ import { getAuth, GoogleAuthProvider, signInWithPopup, signOut } from 'firebase/
 import { getFirestore, doc, getDocFromServer } from 'firebase/firestore';
 // Firebase configuration from environment variables (Vite prefix VITE_)
 const firebaseConfig = {
-  apiKey: "AIzaSyCtDtaUSRBfFqHWrLJxSOCf1tkCoHBABLw",
-  authDomain: "gen-lang-client-0857775553.firebaseapp.com",
-  projectId: "gen-lang-client-0857775553",
-  storageBucket: "gen-lang-client-0857775553.firebasestorage.app",
-  messagingSenderId: "265345450031",
-  appId: "1:265345450031:web:c0021dca323ea90912c6da",
-  firestoreDatabaseId: "ai-studio-c4a3d8e1-e9a0-4f2f-a109-08ff50f246bc"
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
+  firestoreDatabaseId: import.meta.env.VITE_FIREBASE_DATABASE_ID || '(default)'
 };
 
 // Global flags and instances
