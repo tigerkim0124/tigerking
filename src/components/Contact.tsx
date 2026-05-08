@@ -59,13 +59,13 @@ export default function Contact() {
             
             <div className="-mt-2">
               <div className="space-y-4">
-                <div className="flex items-center gap-4 text-brand">
+                <div className="flex items-center gap-4 text-black">
                   <div className="w-10 h-10 rounded-full bg-brand/10 flex items-center justify-center shrink-0">
                     <Mail size={20} className="text-brand" />
                   </div>
                   <span className="text-[1.375rem] font-display font-bold tracking-tight">aik@aikcontents.kr</span>
                 </div>
-                <div className="flex items-center gap-4 text-brand">
+                <div className="flex items-center gap-4 text-black">
                   <div className="w-10 h-10 rounded-full bg-brand/10 flex items-center justify-center shrink-0">
                     <Phone size={20} className="text-brand" />
                   </div>

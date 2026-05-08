@@ -1,9 +1,5 @@
-/**
- * @license
- * SPDX-License-Identifier: Apache-2.0
- */
-
 import { useEffect, useState, lazy, Suspense } from 'react';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import Header from './components/Header';
 import Hero from './components/Hero';
 import About from './components/About';
@@ -15,14 +11,15 @@ import { ScrollToTop } from './components/ScrollToTop';
 
 const BoardModal = lazy(() => import('./components/BoardModal').then(m => ({ default: m.BoardModal })));
 const AdminDashboard = lazy(() => import('./components/AdminDashboard').then(m => ({ default: m.AdminDashboard })));
+const StandaloneStoryViewer = lazy(() => import('./components/StandaloneStoryViewer').then(m => ({ default: m.StandaloneStoryViewer })));
 
 /**
  * AIK CONTENTS - Video Production Agency Website
- * Professionalism meets Innovation.
  */
 export default function App() {
   const [isBoardOpen, setIsBoardOpen] = useState(false);
   const [isAdminOpen, setIsAdminOpen] = useState(false);
+  const location = useLocation();
 
   useEffect(() => {
     // Smooth scroll setup for hash links
@@ -43,17 +40,30 @@ export default function App() {
 
   return (
     <div className="relative min-h-screen">
-      <main className="selection:bg-brand selection:text-white">
-        <Header onOpenNotice={() => setIsBoardOpen(true)} />
-        <Hero />
-        <Services />
-        <About />
-        <Portfolio />
-        <Contact />
-        <Footer onAdminTrigger={() => setIsAdminOpen(true)} />
-      </main>
+      <Routes>
+        <Route path="/" element={
+          <main className="selection:bg-brand selection:text-white">
+            <Header onOpenNotice={() => setIsBoardOpen(true)} />
+            <Hero />
+            <Services />
+            <About />
+            <Portfolio />
+            <Contact />
+            <Footer onAdminTrigger={() => setIsAdminOpen(true)} />
+          </main>
+        } />
+        <Route path="/:id" element={
+          <Suspense fallback={
+            <div className="fixed inset-0 bg-white flex items-center justify-center">
+              <div className="w-12 h-12 border-4 border-brand/20 border-t-brand rounded-full animate-spin" />
+            </div>
+          }>
+            <StandaloneStoryViewer />
+          </Suspense>
+        } />
+      </Routes>
 
-      {/* Fixed UI Elements */}
+      {/* Shared Components */}
       <ScrollToTop />
       <Suspense fallback={null}>
         <BoardModal isOpen={isBoardOpen} onClose={() => setIsBoardOpen(false)} />
