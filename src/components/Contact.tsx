@@ -60,14 +60,14 @@ export default function Contact() {
             <div className="-mt-2">
               <div className="space-y-4">
                 <div className="flex items-center gap-4 text-black">
-                  <div className="w-10 h-10 rounded-full bg-brand/10 flex items-center justify-center shrink-0">
-                    <Mail size={20} className="text-brand" />
+                  <div className="w-10 h-10 rounded-full bg-black/5 flex items-center justify-center shrink-0">
+                    <Mail size={20} className="text-black" />
                   </div>
                   <span className="text-[1.375rem] font-display font-bold tracking-tight">aik@aikcontents.kr</span>
                 </div>
                 <div className="flex items-center gap-4 text-black">
-                  <div className="w-10 h-10 rounded-full bg-brand/10 flex items-center justify-center shrink-0">
-                    <Phone size={20} className="text-brand" />
+                  <div className="w-10 h-10 rounded-full bg-black/5 flex items-center justify-center shrink-0">
+                    <Phone size={20} className="text-black" />
                   </div>
                   <span className="text-[1.375rem] font-display font-bold tracking-tight">070-8098-1896</span>
                 </div>
@@ -94,8 +94,8 @@ export default function Contact() {
                   className="text-center space-y-8 py-10"
                 >
                   <div className="flex justify-center">
-                    <div className="w-20 h-20 bg-brand/10 rounded-full flex items-center justify-center">
-                      <CheckCircle2 size={40} className="text-brand" />
+                    <div className="w-20 h-20 bg-black/5 rounded-full flex items-center justify-center">
+                      <CheckCircle2 size={40} className="text-black" />
                     </div>
                   </div>
                   <div className="space-y-3">
