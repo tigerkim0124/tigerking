@@ -127,7 +127,7 @@ export default function Portfolio() {
 
               <div className="flex justify-between items-start">
                 <div>
-                  <h3 className="text-2xl font-sans font-bold mb-1 text-black group-hover:text-[#0c468c] transition-colors tracking-[-0.02em]">{project.title}</h3>
+                  <h3 className="text-xl font-sans font-bold mb-1 text-black group-hover:text-[#0c468c] transition-colors tracking-[-0.02em]">{project.title}</h3>
                   <p className="text-black/40 text-sm font-sans font-medium uppercase tracking-[-0.02em]">{project.client}</p>
                 </div>
                 <div className="text-right hidden sm:block">
@@ -174,7 +174,7 @@ export default function Portfolio() {
 
                 <div className="flex justify-between items-start">
                   <div>
-                    <h3 className="text-2xl font-sans font-bold text-black group-hover:text-[#0c468c] transition-colors tracking-[-0.03em]">{product.title}</h3>
+                    <h3 className="text-xl font-sans font-bold text-black group-hover:text-[#0c468c] transition-colors tracking-[-0.03em]">{product.title}</h3>
                   </div>
                   <div className="text-right hidden sm:block">
                     <p className="text-[13.1px] text-black uppercase tracking-[-0.03em] font-sans font-medium">저가형 AI영상 예시</p>
