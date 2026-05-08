@@ -38,7 +38,7 @@ interface Notice {
   updatedAt?: any;
 }
 
-export function AdminDashboard({ onClose }: { onClose: () => void }) {
+export function AdminDashboard({ onClose, onPublished }: { onClose: () => void, onPublished?: () => void }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [password, setPassword] = useState('');
   const [loginError, setLoginError] = useState(false);
@@ -155,6 +155,9 @@ export function AdminDashboard({ onClose }: { onClose: () => void }) {
       }
       setView('list');
       setCurrentNotice({});
+      if (onPublished) {
+        onPublished();
+      }
     } catch (error) {
       console.error("Save failed:", error);
       alert("발행 실패: 데이터베이스 연결 또는 권한 옵션을 확인하세요.");

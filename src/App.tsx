@@ -67,7 +67,15 @@ export default function App() {
       <ScrollToTop />
       <Suspense fallback={null}>
         <BoardModal isOpen={isBoardOpen} onClose={() => setIsBoardOpen(false)} />
-        {isAdminOpen && <AdminDashboard onClose={() => setIsAdminOpen(false)} />}
+        {isAdminOpen && (
+          <AdminDashboard 
+            onClose={() => setIsAdminOpen(false)} 
+            onPublished={() => {
+              setIsAdminOpen(false);
+              setIsBoardOpen(true);
+            }}
+          />
+        )}
       </Suspense>
       
       {/* Background Decorative Element */}
