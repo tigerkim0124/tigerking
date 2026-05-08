@@ -12,7 +12,64 @@ import {
   serverTimestamp,
   limit 
 } from 'firebase/firestore';
-import { db } from '../lib/firebase';
+import { auth, db } from '../lib/firebase';
+
+enum OperationType {
+  CREATE = 'create',
+  UPDATE = 'update',
+  DELETE = 'delete',
+  LIST = 'list',
+  GET = 'get',
+  WRITE = 'write',
+}
+
+interface FirestoreErrorInfo {
+  error: string;
+  operationType: OperationType;
+  path: string | null;
+  authInfo: {
+    userId?: string | null;
+    email?: string | null;
+    emailVerified?: boolean | null;
+    isAnonymous?: boolean | null;
+    tenantId?: string | null;
+    providerInfo?: {
+      providerId?: string | null;
+      email?: string | null;
+    }[];
+  }
+}
+
+function handleFirestoreError(error: unknown, operationType: OperationType, path: string | null) {
+  const errInfo: FirestoreErrorInfo = {
+    error: error instanceof Error ? error.message : String(error),
+    authInfo: {
+      userId: auth.currentUser?.uid,
+      email: auth.currentUser?.email,
+      emailVerified: auth.currentUser?.emailVerified,
+      isAnonymous: auth.currentUser?.isAnonymous,
+      tenantId: auth.currentUser?.tenantId,
+      providerInfo: auth.currentUser?.providerData?.map(provider => ({
+        providerId: provider.providerId,
+        email: provider.email,
+      })) || []
+    },
+    operationType,
+    path
+  }
+  console.error('Firestore Error Detail: ', JSON.stringify(errInfo));
+  
+  // Provide user-friendly feedback for common errors
+  if (errInfo.error.includes('1MB')) {
+    alert("용량 초과: 이미지 크기가 너무 큽니다. 이미지를 줄이거나 외부 링크를 사용해 주세요 (Firestore 한도: 1MB)");
+  } else if (errInfo.error.includes('permission')) {
+    alert("권한 오류: 데이터베이스 권한이 없습니다. 로그인을 다시 확인해 주세요.");
+  } else {
+    alert(`발행 실패: ${errInfo.error}`);
+  }
+  
+  throw new Error(JSON.stringify(errInfo));
+}
 import { 
   X, 
   Plus, 
@@ -137,21 +194,29 @@ export function AdminDashboard({ onClose, onPublished }: { onClose: () => void, 
     setLoading(true);
     try {
       if (currentNotice.id && db) {
-        await updateDoc(doc(db, 'posts', currentNotice.id), {
-          title,
-          content,
-          isNew: !!currentNotice.isNew,
-          updatedAt: serverTimestamp()
-        });
+        try {
+          await updateDoc(doc(db, 'posts', currentNotice.id), {
+            title,
+            content,
+            isNew: !!currentNotice.isNew,
+            updatedAt: serverTimestamp()
+          });
+        } catch (err) {
+          handleFirestoreError(err, OperationType.UPDATE, `posts/${currentNotice.id}`);
+        }
       } else if (db) {
-        await addDoc(collection(db, 'posts'), {
-          title,
-          content,
-          isNew: !!currentNotice.isNew,
-          date: new Date().toLocaleDateString('ko-KR'),
-          createdAt: serverTimestamp(),
-          updatedAt: serverTimestamp()
-        });
+        try {
+          await addDoc(collection(db, 'posts'), {
+            title,
+            content,
+            isNew: !!currentNotice.isNew,
+            date: new Date().toLocaleDateString('ko-KR'),
+            createdAt: serverTimestamp(),
+            updatedAt: serverTimestamp()
+          });
+        } catch (err) {
+          handleFirestoreError(err, OperationType.CREATE, 'posts');
+        }
       }
       setView('list');
       setCurrentNotice({});
@@ -159,8 +224,8 @@ export function AdminDashboard({ onClose, onPublished }: { onClose: () => void, 
         onPublished();
       }
     } catch (error) {
-      console.error("Save failed:", error);
-      alert("발행 실패: 데이터베이스 연결 또는 권한 옵션을 확인하세요.");
+      // Errors are handled inside try blocks for specific operations or here
+      console.error("General save failure:", error);
     } finally {
       setLoading(false);
     }
@@ -297,7 +362,15 @@ export function AdminDashboard({ onClose, onPublished }: { onClose: () => void, 
                 <div className="flex-1 overflow-hidden relative">
                   <main className="absolute inset-0 overflow-y-auto">
                     <div className="aik-google-paper-wrapper py-12 px-4 md:px-0">
-                      <div className="aik-google-paper mx-auto bg-white shadow-xl shadow-gray-200/50 border border-gray-200 min-h-[1100px] flex flex-col">
+                      <div className="aik-google-paper mx-auto bg-white shadow-xl shadow-gray-200/50 border border-gray-200 min-h-[1100px] flex flex-col relative">
+                        {/* Editor Tips */}
+                        <div className="absolute -top-8 left-4 right-4 flex items-center justify-between text-[10px] font-bold uppercase tracking-widest text-gray-400">
+                          <div className="flex gap-4">
+                            <span className="text-[#0c468c]">Tip: 이미지 업로드 시 가급적 용량을 줄여주세요 (1MB 한도)</span>
+                            <span>•</span>
+                            <span>유튜브는 비디오 버튼을 클릭 후 URL을 입력하세요</span>
+                          </div>
+                        </div>
                         <ReactQuill 
                           theme="snow"
                           value={currentNotice.content || ''}
@@ -418,6 +491,9 @@ export function AdminDashboard({ onClose, onPublished }: { onClose: () => void, 
               .ql-snow .ql-stroke { stroke: #5f6368 !important; }
               .ql-snow .ql-fill { fill: #5f6368 !important; }
               .ql-snow .ql-picker.ql-header { width: 100px !important; }
+              .ql-video { width: 100%; aspect-ratio: 16 / 9; border-radius: 1.5rem; margin: 2rem 0; box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
+              .ql-editor img { max-width: 100%; border-radius: 1.5rem; margin: 1rem 0; }
+              .ql-editor blockquote { border-left: 5px solid #0c468c; padding-left: 1.5rem; color: #5f6368; font-style: italic; }
             `}</style>
           </motion.div>
         )}

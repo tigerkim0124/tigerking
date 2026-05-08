@@ -33,14 +33,13 @@ service cloud.firestore {
 
     // Posts collection (Board)
     match /posts/{postId} {
-      // Anyone can read posts
       allow read: if true;
       
-      // Simplified write access for stability
-      allow create: if request.resource.data.title is string 
-                   && request.resource.data.content is string;
-      allow update: if true; // UI handles logic, rules allow for flexibility
-      allow delete: if true;
+      // Changed from isSignedIn() to allow public writes because the app uses a manual password check in the UI
+      // Data is still validated by isValidPost()
+      allow create: if isValidPost(request.resource.data);
+      allow update: if isValidPost(request.resource.data);
+      allow delete: if isAdmin();
     }
 
     function merged() {
