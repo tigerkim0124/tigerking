@@ -60,10 +60,10 @@ function handleFirestoreError(error: unknown, operationType: OperationType, path
   console.error('Firestore Error Detail: ', JSON.stringify(errInfo));
   
   // Provide user-friendly feedback for common errors
-  if (errInfo.error.includes('1MB')) {
-    alert("용량 초과: 이미지 크기가 너무 큽니다. 이미지를 줄이거나 외부 링크를 사용해 주세요 (Firestore 한도: 1MB)");
-  } else if (errInfo.error.includes('permission')) {
-    alert("권한 오류: 데이터베이스 권한이 없습니다. 로그인을 다시 확인해 주세요.");
+  if (errInfo.error.toLowerCase().includes('1mb') || errInfo.error.toLowerCase().includes('too large')) {
+    alert("용량 초과: 이미지 크기가 너무 큽니다. 이미지를 줄이거나 외부 링크를 사용해 주세요 (Firestore 한도: 1MB)\n\n팁: 사진 파일을 캡처해서 붙여넣거나 용량을 줄여서 올려주세요.");
+  } else if (errInfo.error.toLowerCase().includes('permission')) {
+    alert("권한 오류: 데이터베이스 권한이 없거나, 작성된 글의 크기가 너무 커서 보안 필터링에 걸렸을 수 있습니다.\n\n해결방법:\n1. 글의 용량(사진 크기)을 줄여보세요.\n2. 로그아웃 후 다시 로그인 해보세요.");
   } else {
     alert(`발행 실패: ${errInfo.error}`);
   }
@@ -189,6 +189,18 @@ export function AdminDashboard({ onClose, onPublished }: { onClose: () => void, 
     if (!title || !content || content === '<p><br></p>') {
       alert('제목과 내용을 모두 입력해 주세요.');
       return;
+    }
+
+    // Check content size (Roughly 1MB limit for Firestore)
+    // Base64 images in Quill can easily exceed 1MB.
+    if (content.length > 800000) {
+      const confirmed = window.confirm(
+        '작성하신 게시글의 용량이 매우 큽니다 (약 1MB 육박).\n' +
+        '이미지가 많이 포함되어 있다면 발행이 실패할 수 있습니다.\n' +
+        '발행 실패 시 이미지를 줄이거나 외부 링크를 사용해 주세요.\n\n' +
+        '그래도 발행을 진행할까요?'
+      );
+      if (!confirmed) return;
     }
 
     setLoading(true);
@@ -480,11 +492,12 @@ export function AdminDashboard({ onClose, onPublished }: { onClose: () => void, 
 
             <style>{`
               .aik-google-paper-wrapper { display: flex; justify-content: center; }
-              .aik-google-paper { width: 100%; max-width: 850px; }
+              .aik-google-paper { width: 100%; max-width: 1100px; }
               .aik-lite-quill { display: flex; flex-direction: column; height: auto; }
-              .aik-lite-quill .ql-toolbar.ql-snow { border: none !important; border-bottom: 1px solid #f1f3f4 !important; background: #fff; position: sticky; top: 0; z-index: 20; padding: 12px 40px !important; display: flex; flex-wrap: wrap; justify-content: center; gap: 2px; }
+              .aik-lite-quill .ql-toolbar.ql-snow { border: none !important; border-bottom: 1px solid #f1f3f4 !important; background: #fff; position: sticky; top: 0; z-index: 20; padding: 8px 24px !important; display: flex; flex-wrap: nowrap; overflow-x: auto; align-items: center; gap: 4px; scrollbar-width: none; }
+              .aik-lite-quill .ql-toolbar.ql-snow::-webkit-scrollbar { display: none; }
               .aik-lite-quill .ql-container.ql-snow { border: none !important; flex: 1; }
-              .aik-lite-quill .ql-editor { padding: 80px 80px 200px 80px !important; font-size: 1rem; line-height: 1.7; color: #202124; min-height: 1000px; }
+              .aik-lite-quill .ql-editor { padding: 60px 80px 200px 80px !important; font-size: 1.1rem; line-height: 1.8; color: #202124; min-height: 1000px; }
               @media (max-width: 768px) { .aik-lite-quill .ql-editor { padding: 40px 24px !important; } }
               .aik-lite-quill .ql-editor.ql-blank::before { left: 80px !important; font-style: normal !important; color: #dadce0 !important; }
               @media (max-width: 768px) { .aik-lite-quill .ql-editor.ql-blank::before { left: 24px !important; } }

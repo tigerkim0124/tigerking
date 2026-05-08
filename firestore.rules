@@ -47,13 +47,10 @@ service cloud.firestore {
     }
 
     function isValidPost(data) {
-      return data.get('title', '') is string && data.get('title', '').size() <= 500 &&
-             data.get('content', '') is string && data.get('content', '').size() <= 1000000 && 
-             (data.get('date', null) == null || data.get('date', '') is string) &&
-             (data.get('category', null) == null || (data.get('category', '') is string && data.get('category', '').size() <= 100)) &&
-             (data.get('isNew', null) == null || data.get('isNew', false) is bool) &&
-             (data.get('createdAt', null) == null || data.get('createdAt', timestamp.now()) is timestamp) &&
-             (data.get('updatedAt', null) == null || data.get('updatedAt', timestamp.now()) is timestamp);
+      return data.get('title', '') is string && 
+             data.get('content', '') is string && 
+             (data.get('date', '') is string) &&
+             (data.get('isNew', false) is bool);
     }
 
     // Admins collection - read-only for security check, only manually manageable via console or owner

@@ -165,7 +165,8 @@ export function StandaloneStoryViewer() {
         .aik-rich-text-body ul, .aik-rich-text-body ol { margin: 1.5rem 0; padding-left: 1.5rem; }
         .aik-rich-text-body li { margin-bottom: 0.5rem; }
         .aik-rich-text-body a { color: #0c468c; text-decoration: underline; font-weight: 700; }
-        .ql-video { width: 100%; aspect-ratio: 16 / 9; border-radius: 2rem; margin: 2rem 0; }
+        .ql-video { width: 100%; aspect-ratio: 16 / 9; border-radius: 2rem; margin: 2rem 0; box-shadow: 0 30px 60px -10px rgba(0,0,0,0.2); }
+        .aik-rich-text-body iframe { width: 100%; aspect-ratio: 16 / 9; border-radius: 2rem; }
       `}</style>
     </div>
   );
