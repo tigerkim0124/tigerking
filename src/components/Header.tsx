@@ -41,7 +41,7 @@ export default function Header({ onOpenNotice }: HeaderProps) {
             <span className="font-display font-bold text-[1.2rem] md:text-[1.45rem] tracking-tight uppercase text-black leading-tight">
               AIK콘텐츠
             </span>
-            <span className="font-gmarket font-medium text-[0.45rem] md:text-[0.55rem] tracking-[0.34em] uppercase text-black/40 leading-none -mt-0.5">
+            <span className="font-gmarket font-medium text-[0.45rem] md:text-[0.55rem] tracking-[0.33em] uppercase text-black leading-none -mt-0.5">
               AIK CONTENTS
             </span>
           </div>

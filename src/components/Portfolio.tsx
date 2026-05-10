@@ -127,7 +127,7 @@ export default function Portfolio() {
         }}
       />
       <div className="relative z-10 max-w-7xl mx-auto px-6">
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-20 gap-8">
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-8">
           <div>
             <span className="font-sans font-medium text-brand text-sm uppercase tracking-[-0.02em] block mb-4">03 // Track Record</span>
             <h2 className="text-5xl md:text-6xl font-display font-bold tracking-[-0.05em] uppercase text-black">포트폴리오</h2>
@@ -196,10 +196,10 @@ export default function Portfolio() {
           })}
         </div>
 
-        <div id="ai-products" className="mt-32 pt-20 border-t border-black/5">
-          <div className="flex flex-col md:flex-row md:items-end justify-between mb-20 gap-8">
+        <div id="ai-products" className="mt-20 pt-12 border-t border-black/5">
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-8">
             <div>
-              <span className="font-sans font-medium text-brand text-sm uppercase tracking-[-0.02em] block mb-4">05 // AI Products</span>
+              <span className="font-sans font-medium text-brand text-sm uppercase tracking-[-0.02em] block mb-4">04 // AI Products</span>
               <h2 className="text-5xl md:text-6xl font-display font-bold tracking-[-0.05em] uppercase text-black">AI광고영상</h2>
             </div>
             <p className="text-[#676868] max-w-md text-[14.84px] font-sans font-medium tracking-[-0.02em] leading-relaxed">
