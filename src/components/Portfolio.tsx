@@ -1,4 +1,6 @@
+import { useState } from 'react';
 import { motion } from 'motion/react';
+import { Play } from 'lucide-react';
 
 const projects = [
   {
@@ -75,11 +77,25 @@ const aiProducts = [
     highlight: "자연스러운 AI 목소리와 결합된 정교한 인터뷰"
   },
   {
+    title: "AI브랜드 광고",
+    client: "AI상품예시",
+    category: "AI 영상 상품",
+    videoUrl: "https://www.youtube.com/embed/0LRNElMozdo",
+    highlight: "자연스러운 AI 모델의 브랜드 전달력"
+  },
+  {
     title: "AI상품광고",
     client: "AI상품예시",
     category: "AI 영상 상품",
     videoUrl: "https://www.youtube.com/embed/BmfxnWELGZ8",
     highlight: "커머스에 특화된 고효율 AI 영상 제작"
+  },
+  {
+    title: "AI상품광고",
+    client: "AI상품예시",
+    category: "AI 영상 상품",
+    videoUrl: "https://www.youtube.com/embed/B3oUmhq3JO0",
+    highlight: "영화같은 스케일의 시네마틱 AI 연출"
   },
   {
     title: "AI소상공인 광고",
@@ -91,9 +107,26 @@ const aiProducts = [
 ];
 
 export default function Portfolio() {
+  const [playingVideo, setPlayingVideo] = useState<string | null>(null);
+
+  const getYoutubeId = (url: string) => {
+    const match = url.match(/embed\/([^/?]+)/);
+    return match ? match[1] : null;
+  };
+
   return (
-    <section id="portfolio" className="py-20 bg-white">
-      <div className="max-w-7xl mx-auto px-6">
+    <section id="portfolio" className="relative py-20 bg-white overflow-hidden">
+      <div 
+        className="absolute inset-0 pointer-events-none" 
+        style={{
+          backgroundImage: `
+            linear-gradient(to right, rgba(0,0,0,0.05) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(0,0,0,0.05) 1px, transparent 1px)
+          `,
+          backgroundSize: '80px 80px'
+        }}
+      />
+      <div className="relative z-10 max-w-7xl mx-auto px-6">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-20 gap-8">
           <div>
             <span className="font-sans font-medium text-brand text-sm uppercase tracking-[-0.02em] block mb-4">03 // Track Record</span>
@@ -106,54 +139,11 @@ export default function Portfolio() {
         </div>
 
         <div className="grid md:grid-cols-2 gap-12">
-          {projects.map((project, index) => (
-            <motion.div
-              key={index}
-              initial={{ y: 50, opacity: 0 }}
-              whileInView={{ y: 0, opacity: 1 }}
-              viewport={{ once: true }}
-              className="group"
-            >
-              <div className="relative aspect-video overflow-hidden mb-6 bg-black">
-                <iframe 
-                  src={project.videoUrl}
-                  title={project.title}
-                  className="w-full h-full border-0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                  loading="lazy"
-                />
-              </div>
+          {projects.map((project, index) => {
+            const videoId = getYoutubeId(project.videoUrl);
+            const isPlaying = playingVideo === project.videoUrl;
 
-              <div className="flex justify-between items-start">
-                <div>
-                  <h3 className="text-xl font-sans font-bold mb-1 text-black group-hover:text-[#0c468c] transition-colors tracking-[-0.02em]">{project.title}</h3>
-                  <p className="text-black/40 text-sm font-sans font-medium uppercase tracking-[-0.02em]">{project.client}</p>
-                </div>
-                <div className="text-right hidden sm:block">
-                  <p className="text-xs text-black/20 uppercase tracking-[-0.02em] font-sans font-medium">Portfolio</p>
-                </div>
-              </div>
-              
-              <div className="mt-4 h-px w-full bg-black/5 group-hover:bg-brand transition-colors duration-500" />
-            </motion.div>
-          ))}
-        </div>
-
-        <div id="ai-products" className="mt-32 pt-20 border-t border-black/5">
-          <div className="flex flex-col md:flex-row md:items-end justify-between mb-20 gap-8">
-            <div>
-              <span className="font-sans font-medium text-brand text-sm uppercase tracking-[-0.02em] block mb-4">05 // AI Products</span>
-              <h2 className="text-5xl md:text-6xl font-display font-bold tracking-[-0.05em] uppercase text-black">저가형 AI영상 예시</h2>
-            </div>
-            <p className="text-[#676868] max-w-md text-[14.84px] font-sans font-medium tracking-[-0.02em] leading-relaxed">
-              AIK 콘텐츠의 합리적 가격의 AI영상 솔루션을 만나보세요. <br />
-              - 아래의 영상은 100% AI로 제작되었습니다 -
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 gap-12">
-            {aiProducts.map((product, index) => (
+            return (
               <motion.div
                 key={index}
                 initial={{ y: 50, opacity: 0 }}
@@ -162,28 +152,117 @@ export default function Portfolio() {
                 className="group"
               >
                 <div className="relative aspect-video overflow-hidden mb-6 bg-black">
-                  <iframe
-                    src={product.videoUrl}
-                    title={product.title}
-                    className="w-full h-full opacity-90 group-hover:opacity-100 transition-opacity duration-500"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                    loading="lazy"
-                  ></iframe>
+                  {isPlaying ? (
+                    <iframe 
+                      src={`${project.videoUrl}?autoplay=1&modestbranding=1&rel=0&showinfo=0&iv_load_policy=3&controls=1&vq=hd720`}
+                      title={project.title}
+                      className="w-full h-full border-0"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                    />
+                  ) : (
+                    <button 
+                      onClick={() => setPlayingVideo(project.videoUrl)}
+                      className="w-full h-full group/video cursor-pointer relative"
+                    >
+                      <img 
+                        src={`https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`}
+                        alt={project.title}
+                        className="w-full h-full object-cover opacity-80 group-hover/video:opacity-100 transition-opacity duration-500"
+                        referrerPolicy="no-referrer"
+                      />
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <div className="w-14 h-14 rounded-full bg-white/90 flex items-center justify-center text-[#676868] shadow-xl transform group-hover/video:scale-110 transition-transform duration-300">
+                          <Play className="fill-current ml-1" size={24} />
+                        </div>
+                      </div>
+                    </button>
+                  )}
                 </div>
 
                 <div className="flex justify-between items-start">
                   <div>
-                    <h3 className="text-xl font-sans font-bold text-black group-hover:text-[#0c468c] transition-colors tracking-[-0.03em]">{product.title}</h3>
+                    <h3 className="text-xl font-sans font-bold mb-1 text-black group-hover:text-[#0c468c] transition-colors tracking-[-0.02em]">{project.title}</h3>
+                    <p className="text-black/40 text-sm font-sans font-medium uppercase tracking-[-0.02em]">{project.client}</p>
                   </div>
                   <div className="text-right hidden sm:block">
-                    <p className="text-[13.1px] text-black uppercase tracking-[-0.03em] font-sans font-medium">저가형 AI영상 예시</p>
+                    <p className="text-xs text-black/20 uppercase tracking-[-0.02em] font-sans font-medium">Portfolio</p>
                   </div>
                 </div>
                 
-                <div className="mt-4 h-px w-full bg-black/5 group-hover:bg-[#0c468c] transition-colors duration-500" />
+                <div className="mt-4 h-px w-full bg-black/5 group-hover:bg-brand transition-colors duration-500" />
               </motion.div>
-            ))}
+            );
+          })}
+        </div>
+
+        <div id="ai-products" className="mt-32 pt-20 border-t border-black/5">
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-20 gap-8">
+            <div>
+              <span className="font-sans font-medium text-brand text-sm uppercase tracking-[-0.02em] block mb-4">05 // AI Products</span>
+              <h2 className="text-5xl md:text-6xl font-display font-bold tracking-[-0.05em] uppercase text-black">AI광고영상</h2>
+            </div>
+            <p className="text-[#676868] max-w-md text-[14.84px] font-sans font-medium tracking-[-0.02em] leading-relaxed">
+              AIK 콘텐츠의 합리적 가격의 AI영상 솔루션을 만나보세요. <br />
+              - 아래의 영상은 100% AI로 제작되었습니다 -
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-12">
+            {aiProducts.map((product, index) => {
+              const videoId = getYoutubeId(product.videoUrl);
+              const isPlaying = playingVideo === product.videoUrl;
+
+              return (
+                <motion.div
+                  key={index}
+                  initial={{ y: 50, opacity: 0 }}
+                  whileInView={{ y: 0, opacity: 1 }}
+                  viewport={{ once: true }}
+                  className="group"
+                >
+                  <div className="relative aspect-video overflow-hidden mb-6 bg-black">
+                    {isPlaying ? (
+                      <iframe
+                        src={`${product.videoUrl}?autoplay=1&modestbranding=1&rel=0&showinfo=0&iv_load_policy=3&controls=1&vq=hd720`}
+                        title={product.title}
+                        className="w-full h-full"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
+                      ></iframe>
+                    ) : (
+                      <button 
+                        onClick={() => setPlayingVideo(product.videoUrl)}
+                        className="w-full h-full group/video cursor-pointer relative"
+                      >
+                        <img 
+                          src={`https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`}
+                          alt={product.title}
+                          className="w-full h-full object-cover opacity-80 group-hover/video:opacity-100 transition-opacity duration-500"
+                          referrerPolicy="no-referrer"
+                        />
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <div className="w-14 h-14 rounded-full bg-white/90 flex items-center justify-center text-[#676868] shadow-xl transform group-hover/video:scale-110 transition-transform duration-300">
+                            <Play className="fill-current ml-1" size={24} />
+                          </div>
+                        </div>
+                      </button>
+                    )}
+                  </div>
+
+                  <div className="flex justify-between items-start">
+                    <div>
+                      <h3 className="text-xl font-sans font-bold text-black group-hover:text-[#0c468c] transition-colors tracking-[-0.02em]">{product.title}</h3>
+                    </div>
+                    <div className="text-right hidden sm:block">
+                      <p className="text-xs text-black/20 uppercase tracking-[-0.02em] font-sans font-medium">AI-generated</p>
+                    </div>
+                  </div>
+                  
+                  <div className="mt-4 h-px w-full bg-black/5 group-hover:bg-brand transition-colors duration-500" />
+                </motion.div>
+              );
+            })}
           </div>
         </div>
       </div>

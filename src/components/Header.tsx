@@ -13,7 +13,7 @@ export default function Header({ onOpenNotice }: HeaderProps) {
     { label: '서비스', id: 'services' },
     { label: '회사소개', id: 'about' },
     { label: '포트폴리오', id: 'portfolio' },
-    { label: '저가형 AI영상 예시', id: 'ai-products' },
+    { label: 'AI광고영상', id: 'ai-products' },
     { label: 'AIK스토리', id: 'board' }
   ];
 
@@ -37,9 +37,14 @@ export default function Header({ onOpenNotice }: HeaderProps) {
               referrerPolicy="no-referrer"
             />
           </div>
-          <span className="font-display font-bold text-[1.2rem] md:text-[1.45rem] tracking-tight uppercase text-black">
-            AIK <span className="text-brand">콘텐츠</span>
-          </span>
+          <div className="flex flex-col">
+            <span className="font-display font-bold text-[1.2rem] md:text-[1.45rem] tracking-tight uppercase text-black leading-tight">
+              AIK콘텐츠
+            </span>
+            <span className="font-gmarket font-medium text-[0.45rem] md:text-[0.55rem] tracking-[0.34em] uppercase text-black/40 leading-none -mt-0.5">
+              AIK CONTENTS
+            </span>
+          </div>
         </a>
         
         {/* Desktop Navigation */}
