@@ -21,7 +21,7 @@ const strengths = [
 
 export default function About() {
   return (
-    <section id="about" className="relative pt-20 pb-12 bg-white border-y border-black/5 overflow-hidden">
+    <section id="about" className="relative pt-20 pb-12 bg-[#f0f0f0]/97 border-y border-black/5 overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 relative z-10">
         <div className="grid lg:grid-cols-2 gap-20 items-center">
           <motion.div
