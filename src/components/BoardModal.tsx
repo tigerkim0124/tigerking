@@ -117,7 +117,7 @@ export function BoardModal({ isOpen, onClose }: BoardModalProps) {
                           </span>
                         )}
                       </div>
-                      <h3 className="text-xl md:text-2xl font-black text-gray-900 leading-tight group-hover/title:text-[#0c468c] transition-colors">
+                      <h3 className="text-sm md:text-base font-black text-gray-900 leading-tight group-hover/title:text-[#0c468c] transition-colors text-left">
                         {notice.title}
                       </h3>
                     </button>

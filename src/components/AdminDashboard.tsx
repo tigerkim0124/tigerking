@@ -105,34 +105,33 @@ export function AdminDashboard({ onClose, onPublished }: { onClose: () => void, 
   const [mounted, setMounted] = useState(false);
 
   const [view, setView] = useState<'list' | 'editor'>('list');
+  const [editorTitle, setEditorTitle] = useState('');
+  const [editorContent, setEditorContent] = useState('');
+  const [isNewBadge, setIsNewBadge] = useState(true);
 
   const quillModules = useMemo(() => ({
     toolbar: [
-      [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-      ['bold', 'italic', 'underline', 'strike'],
-      [{ 'color': [] }, { 'background': [] }],
-      [{ 'script': 'sub'}, { 'script': 'super' }],
-      [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-      [{ 'indent': '-1'}, { 'indent': '+1' }],
-      [{ 'align': [] }],
+      [{ 'header': '1' }, { 'header': '2' }, { 'header': '3' }, { 'header': '4' }, { 'header': '5' }, { 'header': '6' }],
+      [{ 'align': '' }, { 'align': 'center' }, { 'align': 'right' }, { 'align': 'justify' }],
       ['link', 'image', 'video'],
-      ['blockquote', 'code-block'],
-      ['clean']
     ],
   }), []);
 
   const quillFormats = [
     'header',
-    'bold', 'italic', 'underline', 'strike',
-    'color', 'background',
-    'script',
-    'list', 'bullet', 'indent',
     'align',
-    'link', 'image', 'video',
-    'blockquote', 'code-block'
+    'link', 'image', 'video'
   ];
 
   const ADMIN_PASSWORD = '0124';
+
+  useEffect(() => {
+    if (view === 'editor') {
+      setEditorTitle(currentNotice.title || '');
+      setEditorContent(currentNotice.content || '');
+      setIsNewBadge(currentNotice.isNew !== undefined ? currentNotice.isNew : true);
+    }
+  }, [view, currentNotice]);
 
   useEffect(() => {
     setMounted(true);
@@ -183,8 +182,8 @@ export function AdminDashboard({ onClose, onPublished }: { onClose: () => void, 
   };
 
   const handleSave = async () => {
-    const title = currentNotice.title?.trim();
-    const content = currentNotice.content?.trim();
+    const title = editorTitle.trim();
+    const content = editorContent.trim();
 
     if (!title || !content || content === '<p><br></p>') {
       alert('제목과 내용을 모두 입력해 주세요.');
@@ -192,7 +191,6 @@ export function AdminDashboard({ onClose, onPublished }: { onClose: () => void, 
     }
 
     // Check content size (Roughly 1MB limit for Firestore)
-    // Base64 images in Quill can easily exceed 1MB.
     if (content.length > 800000) {
       const confirmed = window.confirm(
         '작성하신 게시글의 용량이 매우 큽니다 (약 1MB 육박).\n' +
@@ -210,7 +208,7 @@ export function AdminDashboard({ onClose, onPublished }: { onClose: () => void, 
           await updateDoc(doc(db, 'posts', currentNotice.id), {
             title,
             content,
-            isNew: !!currentNotice.isNew,
+            isNew: !!isNewBadge,
             updatedAt: serverTimestamp()
           });
         } catch (err) {
@@ -221,7 +219,7 @@ export function AdminDashboard({ onClose, onPublished }: { onClose: () => void, 
           await addDoc(collection(db, 'posts'), {
             title,
             content,
-            isNew: !!currentNotice.isNew,
+            isNew: !!isNewBadge,
             date: new Date().toLocaleDateString('ko-KR'),
             createdAt: serverTimestamp(),
             updatedAt: serverTimestamp()
@@ -232,11 +230,12 @@ export function AdminDashboard({ onClose, onPublished }: { onClose: () => void, 
       }
       setView('list');
       setCurrentNotice({});
+      setEditorTitle('');
+      setEditorContent('');
       if (onPublished) {
         onPublished();
       }
     } catch (error) {
-      // Errors are handled inside try blocks for specific operations or here
       console.error("General save failure:", error);
     } finally {
       setLoading(false);
@@ -341,8 +340,8 @@ export function AdminDashboard({ onClose, onPublished }: { onClose: () => void, 
                         <input 
                           type="text"
                           placeholder="제목 없는 스토리"
-                          value={currentNotice.title || ''}
-                          onChange={(e) => setCurrentNotice({ ...currentNotice, title: e.target.value })}
+                          value={editorTitle}
+                          onChange={(e) => setEditorTitle(e.target.value)}
                           className="text-xl font-bold text-gray-900 bg-transparent border-none outline-none focus:bg-gray-50 rounded px-2 -ml-2 py-0.5 w-full truncate transition-all"
                         />
                         <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest pl-0.5">Google Workspace Editor</span>
@@ -354,8 +353,8 @@ export function AdminDashboard({ onClose, onPublished }: { onClose: () => void, 
                       <input 
                         type="checkbox"
                         id="isNew"
-                        checked={currentNotice.isNew}
-                        onChange={(e) => setCurrentNotice({ ...currentNotice, isNew: e.target.checked })}
+                        checked={isNewBadge}
+                        onChange={(e) => setIsNewBadge(e.target.checked)}
                         className="w-4 h-4 accent-[#0c468c] cursor-pointer"
                       />
                       <label htmlFor="isNew" className="text-xs font-bold text-[#0c468c] cursor-pointer select-none">NEW 배지</label>
@@ -367,6 +366,14 @@ export function AdminDashboard({ onClose, onPublished }: { onClose: () => void, 
                     >
                       {loading ? <div className="w-4 h-4 border-2 border-white/20 border-t-white rounded-full animate-spin" /> : <Save className="w-4 h-4" />}
                       발행
+                    </button>
+                    <button 
+                      onClick={() => setView('list')}
+                      disabled={loading}
+                      className="p-2.5 hover:bg-gray-100 rounded-full transition-colors text-gray-400 hover:text-gray-900 cursor-pointer"
+                      title="취소"
+                    >
+                      <X className="w-6 h-6" />
                     </button>
                   </div>
                 </header>
@@ -385,8 +392,8 @@ export function AdminDashboard({ onClose, onPublished }: { onClose: () => void, 
                         </div>
                         <ReactQuill 
                           theme="snow"
-                          value={currentNotice.content || ''}
-                          onChange={(content) => setCurrentNotice(prev => ({ ...prev, content }))}
+                          value={editorContent}
+                          onChange={setEditorContent}
                           modules={quillModules}
                           formats={quillFormats}
                           className="aik-lite-quill flex-1 flex flex-col"
@@ -494,19 +501,35 @@ export function AdminDashboard({ onClose, onPublished }: { onClose: () => void, 
               .aik-google-paper-wrapper { display: flex; justify-content: center; }
               .aik-google-paper { width: 100%; max-width: 1100px; }
               .aik-lite-quill { display: flex; flex-direction: column; height: auto; }
-              .aik-lite-quill .ql-toolbar.ql-snow { border: none !important; border-bottom: 1px solid #f1f3f4 !important; background: #fff; position: sticky; top: 0; z-index: 20; padding: 8px 24px !important; display: flex; flex-wrap: nowrap; overflow-x: auto; align-items: center; gap: 4px; scrollbar-width: none; }
+              .aik-lite-quill .ql-toolbar.ql-snow { border: none !important; border-bottom: 1px solid #f1f3f4 !important; background: #fff; position: sticky; top: 0; z-index: 20; padding: 12px 24px !important; display: flex; align-items: center; flex-wrap: wrap; gap: 4px; }
               .aik-lite-quill .ql-toolbar.ql-snow::-webkit-scrollbar { display: none; }
+              .ql-snow.ql-toolbar button, .ql-snow .ql-toolbar button { height: 32px !important; min-width: 32px !important; width: auto !important; display: flex; align-items: center; justify-content: center; padding: 0 8px !important; border-radius: 6px !important; transition: all 0.2s !important; border: 1px solid transparent !important; }
+              .ql-snow.ql-toolbar button:hover, .ql-snow .ql-toolbar button:hover { background: #f8f9fa !important; border-color: #f1f3f4 !important; }
+              .ql-snow.ql-toolbar button.ql-active, .ql-snow .ql-toolbar button.ql-active { background: #e8f0fe !important; color: #0c468c !important; }
+              
+              /* Custom Header Button Labels */
+              .ql-snow .ql-picker.ql-header { display: none !important; }
+              .ql-header[value="1"]::before { content: "H1"; font-weight: 900; font-size: 14px; }
+              .ql-header[value="2"]::before { content: "H2"; font-weight: 800; font-size: 13px; }
+              .ql-header[value="3"]::before { content: "H3"; font-weight: 700; font-size: 12px; }
+              .ql-header[value="4"]::before { content: "H4"; font-weight: 600; font-size: 11px; }
+              .ql-header[value="5"]::before { content: "H5"; font-weight: 500; font-size: 10px; }
+              .ql-header[value="6"]::before { content: "H6"; font-weight: 400; font-size: 9px; }
+              
+              .ql-snow .ql-formats { display: flex !important; align-items: center !important; margin-right: 16px !important; border-right: 1px solid #f1f3f4; padding-right: 16px !important; }
+              .ql-snow .ql-formats:last-child { margin-right: 0 !important; border-right: none; padding-right: 0 !important; }
               .aik-lite-quill .ql-container.ql-snow { border: none !important; flex: 1; }
-              .aik-lite-quill .ql-editor { padding: 60px 80px 200px 80px !important; font-size: 1.1rem; line-height: 1.8; color: #202124; min-height: 1000px; }
+              .aik-lite-quill .ql-editor { padding: 60px 80px 200px 80px !important; font-size: 1.1rem; line-height: 1.8; color: #202124 !important; min-height: 1000px; }
               @media (max-width: 768px) { .aik-lite-quill .ql-editor { padding: 40px 24px !important; } }
               .aik-lite-quill .ql-editor.ql-blank::before { left: 80px !important; font-style: normal !important; color: #dadce0 !important; }
               @media (max-width: 768px) { .aik-lite-quill .ql-editor.ql-blank::before { left: 24px !important; } }
-              .ql-snow .ql-stroke { stroke: #5f6368 !important; }
+              .ql-snow .ql-stroke { stroke: #5f6368 !important; stroke-width: 2px !important; }
               .ql-snow .ql-fill { fill: #5f6368 !important; }
-              .ql-snow .ql-picker.ql-header { width: 100px !important; }
+              .ql-snow .ql-picker.ql-header { width: 140px !important; border: 1px solid #e8eaed !important; border-radius: 6px !important; }
+              .ql-snow .ql-picker-label { font-weight: 600 !important; color: #3c4043 !important; }
+              .ql-snow .ql-picker-options { border-radius: 8px !important; border: none !important; box-shadow: 0 4px 12px rgba(0,0,0,0.1) !important; padding: 8px !important; margin-top: 4px !important; }
               .ql-video { width: 100%; aspect-ratio: 16 / 9; border-radius: 1.5rem; margin: 2rem 0; box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
               .ql-editor img { max-width: 100%; border-radius: 1.5rem; margin: 1rem 0; }
-              .ql-editor blockquote { border-left: 5px solid #0c468c; padding-left: 1.5rem; color: #5f6368; font-style: italic; }
             `}</style>
           </motion.div>
         )}

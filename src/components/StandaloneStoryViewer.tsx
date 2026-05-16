@@ -114,10 +114,10 @@ export function StandaloneStoryViewer() {
 
       <div className="flex-1 overflow-y-auto bg-[#fafafa]">
         <div className="absolute inset-0 pointer-events-none opacity-[0.03]" style={{ backgroundImage: 'radial-gradient(#000 1px, transparent 0)', backgroundSize: '40px 40px' }} />
-        <article className="max-w-4xl mx-auto px-6 md:px-12 py-10 md:py-16 relative z-10">
+        <article className="max-w-6xl mx-auto px-6 md:px-12 py-10 md:py-16 relative z-10">
           {/* Editorial Header */}
-          <header className="mb-12 space-y-6 text-center">
-            <div className="flex items-center justify-center gap-4">
+          <header className="mb-12 space-y-6 text-left">
+            <div className="flex items-center justify-start gap-4">
               {story.isNew && (
                 <span className="px-3 py-1 bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-[10px] font-black rounded-full shadow-lg shadow-blue-600/20 uppercase tracking-widest">
                   New Story
@@ -127,7 +127,7 @@ export function StandaloneStoryViewer() {
               <span className="text-[10px] font-bold text-gray-300 uppercase tracking-[0.4em]">Aik Professional Content</span>
             </div>
             
-            <h1 className="text-3xl md:text-5xl font-black text-gray-900 leading-[1.05] tracking-tight text-balance">
+            <h1 className="text-lg md:text-2xl font-black text-gray-900 leading-[1.05] tracking-tight">
               {story.title}
             </h1>
           </header>
@@ -141,7 +141,7 @@ export function StandaloneStoryViewer() {
           </div>
 
           {/* Article Footer Signature */}
-          <footer className="mt-20 pt-10 border-t border-gray-100 flex flex-col items-center text-center">
+          <footer className="mt-20 pt-10 border-t border-gray-100 flex flex-col items-start">
             <button 
               onClick={handleClose}
               className="px-12 py-5 bg-gray-900 text-white rounded-full font-black text-[11px] uppercase tracking-[0.2em] hover:bg-[#0c468c] transition-all cursor-pointer transform hover:-translate-y-1 shadow-xl hover:shadow-2xl"
@@ -153,7 +153,7 @@ export function StandaloneStoryViewer() {
       </div>
 
       <style>{`
-        .aik-article-content { max-width: 760px; margin: 0 auto; }
+        .aik-article-content { max-width: 1000px; margin: 0 auto; }
         .aik-rich-text-body { font-size: 1rem; line-height: 1.7; color: #2c3e50; }
         .aik-rich-text-body h1 { font-size: 2.1rem; font-weight: 900; margin: 2rem 0 1rem; color: #111; line-height: 1.1; letter-spacing: -0.04em; }
         .aik-rich-text-body h2 { font-size: 1.57rem; font-weight: 800; margin: 1.5rem 0 0.75rem; color: #111; letter-spacing: -0.02em; border-bottom: 2px solid #f8fafc; padding-bottom: 0.5rem; }
