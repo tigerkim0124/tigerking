@@ -529,7 +529,10 @@ export function AdminDashboard({ onClose, onPublished }: { onClose: () => void, 
               .ql-snow .ql-picker-label { font-weight: 600 !important; color: #3c4043 !important; }
               .ql-snow .ql-picker-options { border-radius: 8px !important; border: none !important; box-shadow: 0 4px 12px rgba(0,0,0,0.1) !important; padding: 8px !important; margin-top: 4px !important; }
               .ql-video { width: 100%; aspect-ratio: 16 / 9; border-radius: 1.5rem; margin: 2rem 0; box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
-              .ql-editor img { max-width: 100%; border-radius: 1.5rem; margin: 1rem 0; }
+              .ql-editor img { max-width: 70%; height: auto; display: block; margin: 2rem auto; border-radius: 1.5rem; }
+              .ql-align-center { text-align: center; }
+              .ql-align-right { text-align: right; }
+              .ql-align-justify { text-align: justify; }
             `}</style>
           </motion.div>
         )}

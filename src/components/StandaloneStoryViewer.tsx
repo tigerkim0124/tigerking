@@ -160,11 +160,14 @@ export function StandaloneStoryViewer() {
         .aik-rich-text-body h3 { font-size: 1.25rem; font-weight: 800; margin: 1.25rem 0 0.5rem; color: #111; }
         .aik-rich-text-body p { margin-bottom: 1rem; }
         .aik-rich-text-body strong { font-weight: 800; color: #000; }
-        .aik-rich-text-body img { width: 100%; border-radius: 2rem; margin: 2rem 0; box-shadow: 0 40px 80px -20px rgba(0,0,0,0.1); transform: scale(1.01); }
+        .aik-rich-text-body img { max-width: 70%; height: auto; display: block; margin: 2rem auto; border-radius: 2rem; box-shadow: 0 40px 80px -20px rgba(0,0,0,0.1); }
         .aik-rich-text-body blockquote { border-left: 8px solid #0c468c; padding: 1.25rem 1.75rem; margin: 2rem 0; background: #f8fafc; border-radius: 0 1.5rem 1.5rem 0; font-size: 1.1rem; font-style: italic; color: #475569; }
         .aik-rich-text-body ul, .aik-rich-text-body ol { margin: 1.5rem 0; padding-left: 1.5rem; }
         .aik-rich-text-body li { margin-bottom: 0.5rem; }
         .aik-rich-text-body a { color: #0c468c; text-decoration: underline; font-weight: 700; }
+        .ql-align-center { text-align: center; }
+        .ql-align-right { text-align: right; }
+        .ql-align-justify { text-align: justify; }
         .ql-video { width: 100%; aspect-ratio: 16 / 9; border-radius: 2rem; margin: 2rem 0; box-shadow: 0 30px 60px -10px rgba(0,0,0,0.2); }
         .aik-rich-text-body iframe { width: 100%; aspect-ratio: 16 / 9; border-radius: 2rem; }
       `}</style>
