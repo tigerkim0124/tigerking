@@ -332,11 +332,11 @@ export function AdminDashboard({ onClose, onPublished }: { onClose: () => void, 
                     <button onClick={() => setView('list')} className="p-2 hover:bg-gray-100 rounded-full cursor-pointer transition-colors">
                       <ChevronLeft className="w-6 h-6 text-gray-600" />
                     </button>
-                    <div className="flex items-center gap-3 min-w-0 pr-4">
+                    <div className="flex items-center gap-3 min-w-0 pr-4 flex-1">
                       <div className="w-10 h-10 bg-[#0c468c] rounded-xl flex items-center justify-center shrink-0 shadow-sm shadow-[#0c468c]/20">
                         <FileText className="w-5 h-5 text-white" />
                       </div>
-                      <div className="flex flex-col min-w-0">
+                      <div className="flex flex-col min-w-0 flex-1">
                         <input 
                           type="text"
                           placeholder="제목 없는 스토리"
