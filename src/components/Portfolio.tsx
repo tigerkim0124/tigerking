@@ -110,8 +110,110 @@ export default function Portfolio() {
   const [playingVideo, setPlayingVideo] = useState<string | null>(null);
 
   const getYoutubeId = (url: string) => {
-    const match = url.match(/embed\/([^/?]+)/);
+    const match = url.match(/(?:embed\/|v=)([^/?]+)/);
     return match ? match[1] : null;
+  };
+
+  const ProjectCard = ({ project, type = 'standard' }: { project: any, type?: 'standard' | 'featured' }) => {
+    const videoId = getYoutubeId(project.videoUrl);
+    const isPlaying = playingVideo === project.videoUrl;
+
+    if (type === 'featured') {
+      return (
+        <motion.div
+          initial={{ scale: 0.95, opacity: 0 }}
+          whileInView={{ scale: 1, opacity: 1 }}
+          viewport={{ once: true }}
+          className="relative max-w-5xl mx-auto"
+        >
+          <div className="aspect-video bg-black rounded-[2.5rem] overflow-hidden shadow-[0_40px_100px_-20px_rgba(0,0,0,0.3)] border border-black/5 group/main-video">
+            {isPlaying ? (
+              <iframe
+                src={`${project.videoUrl}?autoplay=1&modestbranding=1&rel=0&showinfo=0`}
+                title={project.title}
+                className="w-full h-full"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              />
+            ) : (
+              <button 
+                onClick={() => setPlayingVideo(project.videoUrl)}
+                className="w-full h-full relative cursor-pointer group/btn"
+              >
+                <img 
+                  src={`https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`}
+                  alt={project.title}
+                  className="w-full h-full object-cover opacity-80 group-hover/btn:opacity-100 transition-opacity duration-700"
+                  referrerPolicy="no-referrer"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="w-20 h-20 rounded-full bg-brand flex items-center justify-center text-white shadow-2xl transform group-hover/btn:scale-110 transition-all duration-500">
+                    <Play className="fill-current ml-1" size={32} />
+                  </div>
+                </div>
+                <div className="absolute bottom-10 left-10 text-left">
+                  <span className="text-white/60 text-xs font-bold uppercase tracking-widest mb-2 block">Featured Masterpiece</span>
+                  <h3 className="text-2xl font-bold text-white tracking-tight">{project.title}</h3>
+                </div>
+              </button>
+            )}
+          </div>
+        </motion.div>
+      );
+    }
+
+    return (
+      <motion.div
+        initial={{ y: 50, opacity: 0 }}
+        whileInView={{ y: 0, opacity: 1 }}
+        viewport={{ once: true }}
+        className="group"
+      >
+        <div className="relative aspect-video overflow-hidden mb-6 bg-black">
+          {isPlaying ? (
+            <iframe 
+              src={`${project.videoUrl}?autoplay=1&modestbranding=1&rel=0&showinfo=0&iv_load_policy=3&controls=1&vq=hd720`}
+              title={project.title}
+              className="w-full h-full border-0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            />
+          ) : (
+            <button 
+              onClick={() => setPlayingVideo(project.videoUrl)}
+              className="w-full h-full group/video cursor-pointer relative"
+            >
+              <img 
+                src={`https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`}
+                alt={project.title}
+                className="w-full h-full object-cover opacity-80 group-hover/video:opacity-100 transition-opacity duration-500"
+                referrerPolicy="no-referrer"
+              />
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="w-14 h-14 rounded-full bg-white/90 flex items-center justify-center text-[#676868] shadow-xl transform group-hover/video:scale-110 transition-transform duration-300">
+                  <Play className="fill-current ml-1" size={24} />
+                </div>
+              </div>
+            </button>
+          )}
+        </div>
+
+        <div className="flex justify-between items-start">
+          <div>
+            <h3 className="text-xl font-sans font-bold mb-1 text-black group-hover:text-brand transition-colors tracking-[-0.02em]">{project.title}</h3>
+            {project.client && <p className="text-black/40 text-sm font-sans font-medium uppercase tracking-[-0.02em]">{project.client}</p>}
+          </div>
+          <div className="text-right hidden sm:block">
+            <p className="text-xs text-black/20 uppercase tracking-[-0.02em] font-sans font-medium">
+              {project.category || (project.videoUrl.includes('ai') ? 'AI-generated' : 'Portfolio')}
+            </p>
+          </div>
+        </div>
+        
+        <div className="mt-4 h-px w-full bg-black/5 group-hover:bg-brand transition-colors duration-500" />
+      </motion.div>
+    );
   };
 
   return (
@@ -139,64 +241,36 @@ export default function Portfolio() {
         </div>
 
         <div className="grid md:grid-cols-2 gap-12">
-          {projects.map((project, index) => {
-            const videoId = getYoutubeId(project.videoUrl);
-            const isPlaying = playingVideo === project.videoUrl;
-
-            return (
-              <motion.div
-                key={index}
-                initial={{ y: 50, opacity: 0 }}
-                whileInView={{ y: 0, opacity: 1 }}
-                viewport={{ once: true }}
-                className="group"
-              >
-                <div className="relative aspect-video overflow-hidden mb-6 bg-black">
-                  {isPlaying ? (
-                    <iframe 
-                      src={`${project.videoUrl}?autoplay=1&modestbranding=1&rel=0&showinfo=0&iv_load_policy=3&controls=1&vq=hd720`}
-                      title={project.title}
-                      className="w-full h-full border-0"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                      allowFullScreen
-                    />
-                  ) : (
-                    <button 
-                      onClick={() => setPlayingVideo(project.videoUrl)}
-                      className="w-full h-full group/video cursor-pointer relative"
-                    >
-                      <img 
-                        src={`https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`}
-                        alt={project.title}
-                        className="w-full h-full object-cover opacity-80 group-hover/video:opacity-100 transition-opacity duration-500"
-                        referrerPolicy="no-referrer"
-                      />
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <div className="w-14 h-14 rounded-full bg-white/90 flex items-center justify-center text-[#676868] shadow-xl transform group-hover/video:scale-110 transition-transform duration-300">
-                          <Play className="fill-current ml-1" size={24} />
-                        </div>
-                      </div>
-                    </button>
-                  )}
-                </div>
-
-                <div className="flex justify-between items-start">
-                  <div>
-                    <h3 className="text-xl font-sans font-bold mb-1 text-black group-hover:text-[#0c468c] transition-colors tracking-[-0.02em]">{project.title}</h3>
-                    <p className="text-black/40 text-sm font-sans font-medium uppercase tracking-[-0.02em]">{project.client}</p>
-                  </div>
-                  <div className="text-right hidden sm:block">
-                    <p className="text-xs text-black/20 uppercase tracking-[-0.02em] font-sans font-medium">Portfolio</p>
-                  </div>
-                </div>
-                
-                <div className="mt-4 h-px w-full bg-black/5 group-hover:bg-brand transition-colors duration-500" />
-              </motion.div>
-            );
-          })}
+          {projects.map((project, index) => (
+            <ProjectCard key={`project-${index}`} project={project} />
+          ))}
         </div>
 
-        <div id="ai-products" className="mt-20 pt-12 border-t border-black/5">
+        {/* AIK Original Content Section */}
+        <div id="aik-original" className="mt-12 pt-8 border-t border-black/5">
+          <div className="flex flex-col items-center text-center mb-10">
+            <div className="max-w-2xl">
+              <h2 className="text-4xl md:text-5xl font-display font-black tracking-[-0.05em] uppercase text-black leading-[0.9] mb-8">
+                AIK 오리지널 <span className="text-brand italic">콘텐츠</span>
+              </h2>
+              <div className="space-y-2">
+                <p className="text-[#676868] text-[0.9rem] font-medium leading-relaxed">
+                  AIK 콘텐츠만의 시그니처 오리지널 영상을 감상해보세요.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <ProjectCard 
+            type="featured" 
+            project={{
+              title: "오늘 사진 단편영화",
+              videoUrl: "https://www.youtube.com/embed/eGpU3K2zXdM"
+            }} 
+          />
+        </div>
+
+        <div id="ai-products" className="mt-16 pt-12 border-t border-black/10">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-8">
             <div>
               <span className="font-sans font-medium text-brand text-sm uppercase tracking-[-0.02em] block mb-4">04 // AI Products</span>
@@ -209,62 +283,12 @@ export default function Portfolio() {
           </div>
 
           <div className="grid md:grid-cols-2 gap-12">
-            {aiProducts.map((product, index) => {
-              const videoId = getYoutubeId(product.videoUrl);
-              const isPlaying = playingVideo === product.videoUrl;
-
-              return (
-                <motion.div
-                  key={index}
-                  initial={{ y: 50, opacity: 0 }}
-                  whileInView={{ y: 0, opacity: 1 }}
-                  viewport={{ once: true }}
-                  className="group"
-                >
-                  <div className="relative aspect-video overflow-hidden mb-6 bg-black">
-                    {isPlaying ? (
-                      <iframe
-                        src={`${product.videoUrl}?autoplay=1&modestbranding=1&rel=0&showinfo=0&iv_load_policy=3&controls=1&vq=hd720`}
-                        title={product.title}
-                        className="w-full h-full"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowFullScreen
-                      ></iframe>
-                    ) : (
-                      <button 
-                        onClick={() => setPlayingVideo(product.videoUrl)}
-                        className="w-full h-full group/video cursor-pointer relative"
-                      >
-                        <img 
-                          src={`https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`}
-                          alt={product.title}
-                          className="w-full h-full object-cover opacity-80 group-hover/video:opacity-100 transition-opacity duration-500"
-                          referrerPolicy="no-referrer"
-                        />
-                        <div className="absolute inset-0 flex items-center justify-center">
-                          <div className="w-14 h-14 rounded-full bg-white/90 flex items-center justify-center text-[#676868] shadow-xl transform group-hover/video:scale-110 transition-transform duration-300">
-                            <Play className="fill-current ml-1" size={24} />
-                          </div>
-                        </div>
-                      </button>
-                    )}
-                  </div>
-
-                  <div className="flex justify-between items-start">
-                    <div>
-                      <h3 className="text-xl font-sans font-bold text-black group-hover:text-[#0c468c] transition-colors tracking-[-0.02em]">{product.title}</h3>
-                    </div>
-                    <div className="text-right hidden sm:block">
-                      <p className="text-xs text-black/20 uppercase tracking-[-0.02em] font-sans font-medium">AI-generated</p>
-                    </div>
-                  </div>
-                  
-                  <div className="mt-4 h-px w-full bg-black/5 group-hover:bg-brand transition-colors duration-500" />
-                </motion.div>
-              );
-            })}
+            {aiProducts.map((product, index) => (
+              <ProjectCard key={`product-${index}`} project={product} />
+            ))}
           </div>
         </div>
+
       </div>
     </section>
   );

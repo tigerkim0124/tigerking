@@ -497,43 +497,6 @@ export function AdminDashboard({ onClose, onPublished }: { onClose: () => void, 
               </div>
             )}
 
-            <style>{`
-              .aik-google-paper-wrapper { display: flex; justify-content: center; }
-              .aik-google-paper { width: 100%; max-width: 1100px; }
-              .aik-lite-quill { display: flex; flex-direction: column; height: auto; }
-              .aik-lite-quill .ql-toolbar.ql-snow { border: none !important; border-bottom: 1px solid #f1f3f4 !important; background: #fff; position: sticky; top: 0; z-index: 20; padding: 12px 24px !important; display: flex; align-items: center; flex-wrap: wrap; gap: 4px; }
-              .aik-lite-quill .ql-toolbar.ql-snow::-webkit-scrollbar { display: none; }
-              .ql-snow.ql-toolbar button, .ql-snow .ql-toolbar button { height: 32px !important; min-width: 32px !important; width: auto !important; display: flex; align-items: center; justify-content: center; padding: 0 8px !important; border-radius: 6px !important; transition: all 0.2s !important; border: 1px solid transparent !important; }
-              .ql-snow.ql-toolbar button:hover, .ql-snow .ql-toolbar button:hover { background: #f8f9fa !important; border-color: #f1f3f4 !important; }
-              .ql-snow.ql-toolbar button.ql-active, .ql-snow .ql-toolbar button.ql-active { background: #e8f0fe !important; color: #0c468c !important; }
-              
-              /* Custom Header Button Labels */
-              .ql-snow .ql-picker.ql-header { display: none !important; }
-              .ql-header[value="1"]::before { content: "H1"; font-weight: 900; font-size: 14px; }
-              .ql-header[value="2"]::before { content: "H2"; font-weight: 800; font-size: 13px; }
-              .ql-header[value="3"]::before { content: "H3"; font-weight: 700; font-size: 12px; }
-              .ql-header[value="4"]::before { content: "H4"; font-weight: 600; font-size: 11px; }
-              .ql-header[value="5"]::before { content: "H5"; font-weight: 500; font-size: 10px; }
-              .ql-header[value="6"]::before { content: "H6"; font-weight: 400; font-size: 9px; }
-              
-              .ql-snow .ql-formats { display: flex !important; align-items: center !important; margin-right: 16px !important; border-right: 1px solid #f1f3f4; padding-right: 16px !important; }
-              .ql-snow .ql-formats:last-child { margin-right: 0 !important; border-right: none; padding-right: 0 !important; }
-              .aik-lite-quill .ql-container.ql-snow { border: none !important; flex: 1; }
-              .aik-lite-quill .ql-editor { padding: 60px 80px 200px 80px !important; font-size: 1.1rem; line-height: 1.8; color: #202124 !important; min-height: 1000px; }
-              @media (max-width: 768px) { .aik-lite-quill .ql-editor { padding: 40px 24px !important; } }
-              .aik-lite-quill .ql-editor.ql-blank::before { left: 80px !important; font-style: normal !important; color: #dadce0 !important; }
-              @media (max-width: 768px) { .aik-lite-quill .ql-editor.ql-blank::before { left: 24px !important; } }
-              .ql-snow .ql-stroke { stroke: #5f6368 !important; stroke-width: 2px !important; }
-              .ql-snow .ql-fill { fill: #5f6368 !important; }
-              .ql-snow .ql-picker.ql-header { width: 140px !important; border: 1px solid #e8eaed !important; border-radius: 6px !important; }
-              .ql-snow .ql-picker-label { font-weight: 600 !important; color: #3c4043 !important; }
-              .ql-snow .ql-picker-options { border-radius: 8px !important; border: none !important; box-shadow: 0 4px 12px rgba(0,0,0,0.1) !important; padding: 8px !important; margin-top: 4px !important; }
-              .ql-video { width: 100%; aspect-ratio: 16 / 9; border-radius: 1.5rem; margin: 2rem 0; box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
-              .ql-editor img { max-width: 70%; height: auto; display: block; margin: 2rem auto; border-radius: 1.5rem; }
-              .ql-align-center { text-align: center; }
-              .ql-align-right { text-align: right; }
-              .ql-align-justify { text-align: justify; }
-            `}</style>
           </motion.div>
         )}
       </AnimatePresence>

@@ -127,7 +127,7 @@ export function StandaloneStoryViewer() {
               <span className="text-[10px] font-bold text-gray-300 uppercase tracking-[0.4em]">Aik Professional Content</span>
             </div>
             
-            <h1 className="text-lg md:text-2xl font-black text-gray-900 leading-[1.05] tracking-tight">
+            <h1 className="text-xl md:text-3xl font-black text-gray-900 leading-[1.05] tracking-tight">
               {story.title}
             </h1>
           </header>
@@ -151,26 +151,6 @@ export function StandaloneStoryViewer() {
           </footer>
         </article>
       </div>
-
-      <style>{`
-        .aik-article-content { max-width: 1000px; margin: 0 auto; }
-        .aik-rich-text-body { font-size: 1rem; line-height: 1.7; color: #2c3e50; }
-        .aik-rich-text-body h1 { font-size: 2.1rem; font-weight: 900; margin: 2rem 0 1rem; color: #111; line-height: 1.1; letter-spacing: -0.04em; }
-        .aik-rich-text-body h2 { font-size: 1.57rem; font-weight: 800; margin: 1.5rem 0 0.75rem; color: #111; letter-spacing: -0.02em; border-bottom: 2px solid #f8fafc; padding-bottom: 0.5rem; }
-        .aik-rich-text-body h3 { font-size: 1.25rem; font-weight: 800; margin: 1.25rem 0 0.5rem; color: #111; }
-        .aik-rich-text-body p { margin-bottom: 1rem; }
-        .aik-rich-text-body strong { font-weight: 800; color: #000; }
-        .aik-rich-text-body img { max-width: 70%; height: auto; display: block; margin: 2rem auto; border-radius: 2rem; box-shadow: 0 40px 80px -20px rgba(0,0,0,0.1); }
-        .aik-rich-text-body blockquote { border-left: 8px solid #0c468c; padding: 1.25rem 1.75rem; margin: 2rem 0; background: #f8fafc; border-radius: 0 1.5rem 1.5rem 0; font-size: 1.1rem; font-style: italic; color: #475569; }
-        .aik-rich-text-body ul, .aik-rich-text-body ol { margin: 1.5rem 0; padding-left: 1.5rem; }
-        .aik-rich-text-body li { margin-bottom: 0.5rem; }
-        .aik-rich-text-body a { color: #0c468c; text-decoration: underline; font-weight: 700; }
-        .ql-align-center { text-align: center; }
-        .ql-align-right { text-align: right; }
-        .ql-align-justify { text-align: justify; }
-        .ql-video { width: 100%; aspect-ratio: 16 / 9; border-radius: 2rem; margin: 2rem 0; box-shadow: 0 30px 60px -10px rgba(0,0,0,0.2); }
-        .aik-rich-text-body iframe { width: 100%; aspect-ratio: 16 / 9; border-radius: 2rem; }
-      `}</style>
     </div>
   );
 }
